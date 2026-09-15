@@ -1,0 +1,300 @@
+
+[[level]]
+flag = "L3AK{1_th4t_w45_pr3tty_34sy}"
+solves_needed = 10
+puzzle_width = 4
+puzzle_height = 4
+time_limit_seconds = 60
+show_time_limit = false
+base_points = 100
+
+[[level.image]]
+path = "level1/classy_lady.png"
+title = "Classy Lady"
+artist = "Ruaidri"
+url = "https://www.furaffinity.net/view/59558651/"
+
+[[level.image]]
+path = "level1/northern_lights.png"
+title = "Among the Northern Lights"
+artist = "red3engine"
+url = "https://www.furaffinity.net/view/46767801/"
+
+[[level.image]]
+path = "level1/keep_walking.png"
+title = "Utopia"
+artist = "Trigaroo"
+url = "https://www.furaffinity.net/view/34157282/"
+
+[[level.image]]
+path = "level1/destruction.png"
+title = "Destruction"
+artist = "Trigaroo"
+url = "https://www.furaffinity.net/view/29718177/"
+
+[[level.image]]
+path = "level1/blue_sky.png"
+title = "Blue Sky"
+artist = "Hyilpi"
+url = "https://bsky.app/profile/hyilpi.bsky.social/post/3lcgiiizgv222"
+
+[[level.image]]
+path = "level1/hoshino.png"
+title = "Hoshino"
+artist = "Hyilpi"
+url = "https://www.furaffinity.net/view/58497672/"
+
+[[level.image]]
+path = "level1/cafeteria.png"
+title = "Cafeteria"
+artist = "EngineTrap"
+url = "https://twitter.com/EngineTrap/status/1736858638051062263"
+
+[[level.image]]
+path = "level1/lazy.png"
+title = "想偷懒"
+artist = "tuozhazi"
+url = "https://twitter.com/TUOZHAZI/status/1765958817408500102"
+
+[[level.image]]
+path = "level1/spacewolf.png"
+title = "Spacewolf"
+artist = "Squawq7"
+url = "https://twitter.com/Squawq7/status/1830711630528692529"
+
+[[level.image]]
+path = "level1/going_somewhere.png"
+title = "Going Somewhere"
+artist = "captainspacefox"
+url = "https://twitter.com/captainspacefox/status/1658101940717273096"
+
+[[level]]
+flag = "L3AK{2_i_5ur3_hop3_u_d1dn7_d0_th4t_by_h4nd}"
+solves_needed = 10
+puzzle_width = 12
+puzzle_height = 12
+time_limit_seconds = 1000
+show_time_limit = false
+base_points = 1000
+
+[[level.image]]
+path = "level2/cook.png"
+title = "Jesse we Need to Cook"
+artist = "Frencore"
+url = "https://twitter.com/FreneticWolf/status/1632054289987432451"
+
+[[level.image]]
+path = "level2/bodega.png"
+title = "Bodega Catgirl"
+artist = "ashleyloob"
+url = "https://twitter.com/ashleyloob/status/1504850114010968065"
+
+[[level.image]]
+path = "level2/provision_shop.png"
+title = "Provision Shop"
+artist = "MintCashew"
+url = "https://twitter.com/MintCashew/status/1846945533346431245"
+
+[[level.image]]
+path = "level2/secret_spot.png"
+title = "Rue's Secret Spot"
+artist = "ShadChes72"
+url = "https://twitter.com/ShadChes72/status/1861485073771700437"
+
+[[level.image]]
+path = "level2/woods.png"
+title = "Woods"
+artist = "dirtsecret"
+url = "https://twitter.com/dirtsecret/status/1778519994567098492"
+
+[[level.image]]
+path = "level2/merchant.png"
+title = "The Merchant is not Here... Hurry"
+artist = "HarucchiArt"
+url = "https://twitter.com/HarucchiArt/status/1853139011440685141"
+
+[[level.image]]
+path = "level2/fishin.png"
+title = "Fishin' in the Rain"
+artist = "MylaFox"
+url = "https://twitter.com/MylaFox/status/1421516087590522881"
+
+[[level.image]]
+path = "level2/tears.png"
+title = "Tears"
+artist = "3rdPerson_IZ"
+url = "https://twitter.com/3rdPerson_IZ/status/1681087262719631361"
+
+[[level.image]]
+path = "level2/starbucks.png"
+title = "Starbucks Job"
+artist = "evehalcyon"
+url = "https://twitter.com/eviex_01/status/1857423307324510685"
+
+[[level.image]]
+path = "level2/midnight_snack.png"
+title = "Midnight Snack"
+artist = "MintCashew"
+url = "https://twitter.com/MintCashew/status/1749466540532199781"
+
+[[level]]
+flag = "L3AK{3_th3_ar7w0rk_1s_pr3tty_c00l_i_7h1nk}"
+solves_needed = 10
+puzzle_width = 32
+puzzle_height = 32
+time_limit_seconds = 180
+show_time_limit = false
+base_points = 3000
+
+[[level.image]]
+path = "level3/adventure.png"
+title = "Forest Adventure"
+artist = "HarucchiArt"
+url = "https://twitter.com/HarucchiArt/status/1763953005773148269"
+
+[[level.image]]
+path = "level3/city_lights.png"
+title = "City Lights"
+artist = "HarucchiArt"
+url = "https://twitter.com/HarucchiArt/status/1811077709897912335"
+
+[[level.image]]
+path = "level3/healed.png"
+title = "One Day I Will be Healed"
+artist = "MylaFox"
+url = "https://twitter.com/MylaFox/status/1734955031609184602"
+
+[[level.image]]
+path = "level3/restricted_area.png"
+title = "Restricted Area"
+artist = "jacato"
+url = "https://twitter.com/jacato/status/1457596876539236353"
+
+[[level.image]]
+path = "level3/big_adventure.png"
+title = "Are You Ready For Your Biggest Adventure Yet?"
+artist = "HarucchiArt"
+url = "https://x.com/HarucchiArt/status/1843714372117639560"
+
+[[level.image]]
+path = "level3/battle.png"
+title = "The Final Battle"
+artist = "HarucchiArt"
+url = "https://x.com/HarucchiArt/status/1769356063273341417"
+
+[[level.image]]
+path = "level3/umbreon.png"
+title = "今日の日をいつか 思い出せ"
+artist = "ZinFyu"
+url = "https://x.com/add9575/status/867010212661678080"
+
+[[level.image]]
+path = "level3/grani.png"
+title = "Grani in the City"
+artist = "Breakdiamond"
+url = "https://x.com/Breakdiamond8/status/1679096387814969344"
+
+[[level.image]]
+path = "level3/cyberpunk.png"
+title = "City Night"
+artist = "amaryllis.no"
+url = "https://x.com/amaryllis_no/status/1703511128469602697"
+
+[[level.image]]
+path = "level3/apocraphy.png"
+title = "Studying for Apocraphy Exam"
+artist = "amaryllis.no"
+url = "https://twitter.com/amaryllis_no/status/1839683299230331297"
+
+[[level]]
+flag = "<a href=\"/downloads/puzzles.zip\" class=\"highlight\">download source code</a>"
+solves_needed = 1
+puzzle_width = 32
+puzzle_height = 32
+time_limit_seconds = 3600
+show_time_limit = true
+base_points = 5000
+
+[[level.image]]
+path = "level4/lines.png"
+title = "Lines"
+artist = "meeeeee :3"
+url = "https://nuh.uh"
+
+[[level]]
+flag = "L3AK{4_0rig1n4lly_i_pl4nned_th1s_70_b3_4_d3coy_fl4g_l0l_4nyw4y5_g0_s0lv3_th3_puzzl3}"
+solves_needed = 1
+puzzle_width = 128
+puzzle_height = 128
+time_limit_seconds = 5
+show_time_limit = true
+base_points = 10000
+
+[[level.image]]
+path = "level5/l3ak_catgirl.png"
+title = "L3ak Catgirl"
+artist = "Camila"
+url = "https://twitter.com/KotoraMila"
+
+[general]
+ratelimit_ms = 100
+max_username_length = 15000
+min_username_length = 4
+username_blacklist = [
+    "#",
+    "$",
+    "%",
+    "&",
+    "'",
+    "*",
+    ",",
+    "-",
+    ".",
+    "/",
+    ":",
+    ";",
+    "?",
+    "@",
+    "\\",
+    "^",
+    "_",
+    "`",
+    "{",
+    "|",
+    "}",
+    "~",
+    " ",
+    "\"",
+    "<",
+    ">",
+    "SCRIPT",
+]
+border_width = 5
+admin_name = "therealmeowmeow"
+verify_points = 0xe926
+bind_address = "0.0.0.0:1353"
+application_url = "http://127.0.0.1:1353"
+
+[[general.winmessage]]
+text = "epic..."
+[[general.winmessage]]
+text = "chat is this real"
+[[general.winmessage]]
+text = "woag you solved it... thats so cool..."
+[[general.winmessage]]
+text = "omg ur so smart"
+[[general.winmessage]]
+text = "pawesome!"
+[[general.winmessage]]
+text = "based real pogged and true"
+
+[[general.expiredmessage]]
+text = "too slow tho lmao"
+[[general.expiredmessage]]
+text = "you could maybe try being a little faster next time?"
+[[general.expiredmessage]]
+text = "rip bozo no points for u"
+[[general.expiredmessage]]
+text = "slowpoke..."
+
+# last flag L3AK{s0lv3d_by_r4nd0m_ch4nc3_b6ccb4ece5454dca}

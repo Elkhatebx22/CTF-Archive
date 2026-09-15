@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <span><a href="/">Home</a></span>
+            <span><a href="/help">Help</a></span>
+            <span><a href="/puzzle">Play</a></span>
+            <span><a href="/leaderboard">Leaderboard</a></span>
+            <span class="username-link hide"><a href="/profile"></a></span>
+        </div>
+        <div class="body-container">
+            <div class="profile-container">
+                <div class="puzzle-board-loading">
+                    <div class="loader"></div>
+                </div>
+                <div class="user-data">
+                    <div class="profile-header"></div>
+                    <div class="profile-body">
+                        <span class="ranking"></span>
+                        <span class="points"></span>
+                        <span class="solves"></span>
+                        <span class="age"></span>
+                        <span class="level"></span>
+                    </div>
+                </div>
+                <h2 class="hide">solved puzzles:</h2>
+                <div class="solves-table-body hide">
+                    <table class="solves-table">
+                        <tbody>
+                            <tr>
+                                <td class="timestamp"></td>
+                                <td class="title"></td>
+                                <td class="artist"></td>
+                                <td class="solvetime"></td>
+                                <td class="tries"></td>
+                                <td class="points"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const solvesTable = document.querySelector( ".solves-table tbody" )
+
+        let savedName = null
+        let savedUid = null
+        function setUsername() {
+            savedName = localStorage.getItem( "username" )
+            savedUid = parseInt( localStorage.getItem( "userid" ) )
+            if ( savedName != undefined && savedName != "" ) {
+                document.querySelector( ".username-link > a" ).textContent = savedName
+                document.querySelector( ".username-link" ).classList.remove( "hide" )
+            }
+        }
+
+        async function loadProfile() {
+            let uid = parseInt( window.location.pathname.substr( 9 ).split( "/" )[ 0 ] )
+            if ( isNaN( uid ) ) {
+                uid = savedUid
+            }
+            fetch( '/api/profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( {
+                    uid: uid,
+                } ),
+            } ).then( response => response.json() ).then( data => {
+                if ( data.error ) {
+                    if ( data.error == "user not found" ) {
+                        document.querySelector( ".profile-container" ).innerHTML = '<span style="padding-top: 100px">that\'s not a real person probably</span>'
+                    }
+                    else {
+                        console.log( error )
+                    }
+                }
+                else {
+                    document.querySelector( "title" ).textContent = data.username
+                    document.querySelector( ".profile-header" ).innerHTML = `<h1>${data.name}</h1>`
+                    document.querySelector( ".profile-body .ranking" ).innerHTML = `ranking: <span class="value">${data.ranking > 0 ? data.ranking : 'n/a'}</span>`
+                    document.querySelector( ".profile-body .points" ).innerHTML = `points: <span class="value">${data.points}</span>`
+                    document.querySelector( ".profile-body .solves" ).innerHTML = `solves: <span class="value">${data.solves}</span>`
+                    document.querySelector( ".profile-body .age" ).innerHTML = `account age: <span class="value">${data.account_age}</span>`
+                    document.querySelector( ".profile-body .level" ).innerHTML = `level: <span class="value">${data.level}</span>`
+
+                    solvesTable.innerHTML = ""
+                    if ( data.puzzles.length < 1 ) {
+                        let puzzleRow = document.createElement( "tr" )
+                        puzzleRow.textContent = "this player hasn't solved any puzzles"
+                        solvesTable.appendChild( puzzleRow )
+                    } else {
+                        data.puzzles.forEach( puzzle => {
+                            let puzzleRow = document.createElement( "tr" )
+
+                            let title = document.createElement( "td" )
+                            let level = document.createElement( "td" )
+                            let points = document.createElement( "td" )
+                            let solveDuration = document.createElement( "td" )
+                            let solvedTime = document.createElement( "td" )
+                            let artist = document.createElement( "td" )
+                            let tries = document.createElement( "td" )
+
+                            title.innerHTML = `<a href="${puzzle.url}" class="highlight">${puzzle.title}</a>`
+                            level.textContent = puzzle.level
+                            points.textContent = puzzle.points
+                            solveDuration.textContent = puzzle.solve_duration
+                            solvedTime.textContent = puzzle.solved_time
+                            artist.textContent = puzzle.artist
+                            tries.textContent = puzzle.tries
+
+                            solvedTime.classList.add( "timestamp" )
+                            title.classList.add( "title" )
+                            artist.classList.add( "artist" )
+                            solveDuration.classList.add( "solvetime" )
+                            tries.classList.add( "tries" )
+                            points.classList.add( "points" )
+
+                            puzzleRow.appendChild( solvedTime )
+                            puzzleRow.appendChild( title )
+                            puzzleRow.appendChild( artist )
+                            puzzleRow.appendChild( solveDuration )
+                            puzzleRow.appendChild( tries )
+                            puzzleRow.appendChild( points )
+
+                            solvesTable.appendChild( puzzleRow )
+                        } )
+                    }
+                    document.querySelector( ".puzzle-board-loading" ).classList.add( "hide" )
+                    document.querySelector( ".solves-table-body" ).classList.remove( "hide" )
+                    document.querySelector( ".profile-container h2" ).classList.remove( "hide" )
+                }
+            } )
+                .catch( error => {
+                    console.error( error )
+                } )
+        }
+
+        setUsername()
+        loadProfile()
+    </script>
+</body>

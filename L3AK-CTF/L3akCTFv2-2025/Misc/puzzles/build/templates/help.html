@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <span><a href="/">Home</a></span>
+            <span><a href="/help">Help</a></span>
+            <span><a href="/puzzle">Play</a></span>
+            <span><a href="/leaderboard">Leaderboard</a></span>
+            <span class="username-link hide"><a href="/profile"></a></span>
+        </div>
+        <div class="body-container">
+            <div class="help-container">
+                <div class="help-header">
+                    <h1>Instructions</h1>
+                    <p>this is a multi-part challenge, split into 5 levels. the next challenge part will unlock after
+                        solving the previous one. to get past a level you need to solve a few jigsaw puzzles, with
+                        varying difficulty and time limits per level. solve some puzzles and find the flags!<br><br>some
+                        notes - </p>
+                </div>
+                <div class="help-body">
+                    <ul>
+                        <li>brute force against this challenge's infrastructure isn't strictly forbidden, but it won't
+                            help you. there is a 350ms rate limit on most API endpoints for good measure. if you DoS me
+                            i will be sad.</li>
+                        <li>everything you need for each level is provided to you. instead of a flag, level 4 unlocks a
+                            challenge source code download that may or may not help you with level 5</li>
+                        <li>the artwork i used for the puzzles is mostly sourced from artists on twitter. credits and a
+                            source link are given for each of them</li>
+                        <li>flags are formatted in all lowercase, prefixed with the challenge number they refer to</li>
+                        <li>this is in misc instead of web for a reason :p</li>
+                        <li>this challenge is mostly re-used with some modifications from the 2025 RITSEC CTF. during
+                            that event, the levels beyond the trivial got zero solves, and the source code for the
+                            challenge was not unlocked for any team.</li>
+                    </ul>
+                </div>
+                <div class="help-footer">
+                    <p>i had a lot of fun building this, i hope you have as much fun solving it :3<br><br>- sylvie</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function setUsername() {
+            let savedName = localStorage.getItem( "username" )
+            if ( savedName != undefined && savedName != "" ) {
+                document.querySelector( ".username-link > a" ).textContent = savedName
+                document.querySelector( ".username-link" ).classList.remove( "hide" )
+            }
+        }
+
+        setUsername()
+    </script>
+</body>

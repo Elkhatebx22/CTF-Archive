@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/utils.js"></script>
+    <script src="https://kit.fontawesome.com/081263bd39.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <span><a href="/">Home</a></span>
+            <span><a href="/help">Help</a></span>
+            <span><a href="/puzzle">Play</a></span>
+            <span><a href="/leaderboard">Leaderboard</a></span>
+            <span class="username-link hide"><a href="/profile"></a></span>
+        </div>
+        <div class="puzzle-container">
+            <div class="image-meta">
+                <h1 id="puzzle-title"><a href="" target="_blank"></a></h1>
+                <div class="puzzle-navbuttons">
+                    <div class="nav-button back hide"><a class="highlight" href="/">back</a></div>
+                    <h3 id="artist"></h3>
+                    <div class="nav-button next hide"><a class="highlight" onclick="skipPuzzle()">skip</a></div>
+                </div>
+            </div>
+            <div class="puzzle-data-container">
+                <div class="puzzletimer-container hide">
+                    <div class="puzzletimer" style="--width: 102%"></div>
+                </div>
+                <div class="puzzle-board-loading">
+                    <div class="loader"></div>
+                </div>
+                <div class="puzzle-board hide" id="board"></div>
+            </div>
+        </div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-meta">
+                <div class="close-modal"><i class="fas fa-close close" onclick="hideModal()"></i></div>
+            </div>
+            <div class="modal-header">
+                <h2></h2>
+            </div>
+            <div class="modal-text">
+                <p></p>
+            </div>
+            <div class="modal-choices"></div>
+        </div>
+    </div>
+    <script>
+        const board = document.getElementById( "board" )
+        const timer = document.querySelector( ".puzzletimer" )
+        const timer_container = document.querySelector( ".puzzletimer-container" )
+        const modal = document.getElementById( "modal" )
+        const nav_buttons = document.querySelector( ".puzzle-navbuttons" )
+
+        let timerInterval = null
+        let rows, cols, pieceWidth, pieceHeight
+        let selectedPiece = null
+        let puzzleID = ""
+        let level = 0
+        let puzzleTime = 0
+        let endTime = 0
+        let solved = false
+        let timeExpired = false
+
+        function setUsername() {
+            let savedName = localStorage.getItem( "username" )
+            if ( savedName != undefined && savedName != "" ) {
+                document.querySelector( ".username-link > a" ).textContent = savedName
+                document.querySelector( ".username-link" ).classList.remove( "hide" )
+            }
+        }
+
+        function hideModal() {
+            modal.style.display = "none"
+        }
+
+        function skipPuzzle() {
+            if ( timeExpired || solved ) {
+                location.reload()
+            } else {
+                fetch( '/api/skippuzzle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify( {
+                        puzzle_id: puzzleID
+                    } ),
+                } ).then( response => response.json() ).then( data => {
+                    location.reload()
+                } )
+                    .catch( error => {
+                        console.error( error )
+                    } )
+            }
+        }
+
+        function flashModal( content, color, title, choices ) {
+            modal.querySelector( ".modal-header h2" ).textContent = title
+            modal.querySelector( ".modal-text > p" ).textContent = content
+            modal.querySelector( ".modal-content" ).classList = `modal-content ${color}`
+            let modalChoices = modal.querySelector( ".modal-choices" )
+            modalChoices.innerHTML = ""
+
+            let i = 0
+            choices.forEach( ( choice ) => {
+                let choiceLink = document.createElement( "a" )
+                choiceLink.classList = "modal-choice highlight"
+                choiceLink.style.setProperty( "--choice-num", `${i}` )
+                choiceLink.textContent = choice.text
+                if ( choice.url ) {
+                    choiceLink.href = choice.url
+                }
+                if ( choice.onclick ) {
+                    choiceLink.onclick = choice.onclick
+                }
+                modalChoices.appendChild( choiceLink )
+                i++
+            } )
+
+            modalChoices.style.setProperty( "--total-choices", `${i}` )
+
+            modal.style.display = "block"
+        }
+
+        function resizeBoard() {
+            const windowHeight = window.innerHeight - document.querySelector( ".header" ).getBoundingClientRect().height - 50
+            const windowWidth = window.innerWidth - 100
+            const overallWidth = cols * pieceWidth
+            const overallHeight = rows * pieceHeight
+            const scaleFactor = Math.min( ( windowHeight / overallHeight ), ( windowWidth / overallWidth ) ) * 0.80
+            const scaledWidth = Math.ceil( pieceWidth * scaleFactor )
+            const scaledHeight = Math.ceil( pieceHeight * scaleFactor )
+            board.style.width = `${cols * scaledWidth}px`
+            board.style.height = `${rows * scaledHeight}px`
+            board.style.gridTemplateColumns = `repeat(${cols}, ${scaledWidth}px)`
+            board.style.gridTemplateRows = `repeat(${rows}, ${scaledHeight}px)`
+
+            timer_container.style.width = `${cols * scaledWidth}px`
+            nav_buttons.style.width = `${cols * scaledWidth}px`
+
+            let boardImages = board.childNodes
+            boardImages.forEach( ( p ) => {
+                p.style.width = `${scaledWidth}px`
+                p.style.height = `${scaledHeight}px`
+            } )
+
+            return [ scaleFactor, scaledWidth, scaledHeight ]
+        }
+
+        function setTimer() {
+            if ( !solved ) {
+                let currTime = Date.now()
+                let timeUntilEnd = Math.max( endTime - currTime, 0 )
+                let percentRemaining = ( timeUntilEnd / puzzleTime )
+
+                timer.style.setProperty( "--width", `${percentRemaining * 102}%` )
+
+                if ( timeUntilEnd <= 0 ) {
+                    timeExpired = true
+                    flashModal( "you can start a new puzzle, or keep solving this one", "red", "Time's Up :(", [ { text: "home", url: "/" }, { text: "stay", onclick: hideModal }, { text: "next", url: "/puzzle" } ] )
+                    clearInterval( timerInterval )
+                    timer_container.classList.add( "frozen" )
+                    document.querySelector( ".nav-button.next > a" ).textContent = "next"
+                }
+            }
+        }
+
+        async function loadPuzzle() {
+            try {
+                fetch( "/api/newpuzzle" ).then( response => response.json() ).then( data => {
+                    rows = data.rows
+                    cols = data.cols
+                    pieceWidth = data.width
+                    pieceHeight = data.height
+                    puzzleID = data.puzzle_id
+                    level = data.level + 1
+                    puzzleTime = data.puzzle_time * 1000
+                    endTime = data.end_time
+
+                    let size = resizeBoard()
+
+                    let scaleFactor = size[ 0 ]
+                    let scaledWidth = size[ 1 ]
+                    let scaledHeight = size[ 2 ]
+
+                    const pieces = data.pieces.map( ( src, index ) => {
+                        const img = document.createElement( "img" )
+                        img.src = `data:image/png;base64,${src}`
+                        img.classList.add( "puzzle-piece" )
+                        img.dataset.index = index
+                        img.style.width = `${scaledWidth}px`
+                        img.style.height = `${scaledHeight}px`
+                        img.setAttribute( "n", index )
+                        board.appendChild( img )
+                        return img
+                    } )
+
+                    document.querySelector( ".puzzle-container" ).classList.add( `level${level}` )
+                    timer_container.style.animationName = "moveBackground"
+                    timer_container.style.animationTimingFunction = "linear"
+                    timer_container.style.animationIterationCount = "infinite"
+                    timer_container.style.animationDuration = `${data.puzzle_time / 30}s`
+                    document.querySelector( "#puzzle-title > a" ).textContent = data.title
+                    document.querySelector( "#puzzle-title > a" ).setAttribute( 'href', data.url )
+                    document.querySelector( "#artist" ).textContent = data.artist
+                    document.querySelector( "title" ).textContent = data.title
+
+                    document.querySelector( "#puzzle-title" ).classList.remove( "hide" )
+                    document.querySelector( "#artist" ).classList.remove( "hide" )
+                    document.querySelector( ".nav-button.next" ).classList.remove( "hide" )
+                    document.querySelector( ".nav-button.back" ).classList.remove( "hide" )
+                    document.querySelector( ".puzzle-board" ).classList.remove( "hide" )
+                    document.querySelector( ".puzzle-board-loading" ).classList.add( "hide" )
+
+                    let offsetStart = Math.random() * 360
+                    document.querySelector( ".image-meta" ).style.setProperty( "--background-offset-start", `${offsetStart}` )
+                    document.querySelector( ".image-meta" ).style.setProperty( "--background-offset-end", `${( offsetStart + 300 ) % 360}` )
+
+                    if ( data.show_timer ) {
+                        timer_container.classList.remove( "hide" )
+                    }
+                    setTimeout( () => {
+                        setTimer()
+                    }, 10 );
+
+                    timerInterval = setInterval( setTimer, 100 )
+                } ).catch( error => {
+                    console.log( `fetch error: ${error}` )
+                } )
+            } catch ( error ) {
+                console.log( `Error loading puzzle: ${error}` )
+            }
+        }
+
+        board.addEventListener( "click", ( e ) => {
+            if ( e.target.classList.contains( "puzzle-piece" ) ) {
+                if ( !selectedPiece ) {
+                    selectedPiece = e.target
+                    selectedPiece.classList.add( "selected" )
+                } else if ( selectedPiece === e.target ) {
+                    selectedPiece.classList.remove( "selected" )
+                    selectedPiece = null
+                } else {
+                    swapPieces( selectedPiece, e.target )
+                    selectedPiece.classList.remove( "selected" )
+                    selectedPiece = null
+                }
+            }
+        } )
+
+        function swapPieces( piece1, piece2 ) {
+            const tempPos = piece1.dataset.position
+            piece1.dataset.position = piece2.dataset.position
+            piece2.dataset.position = tempPos
+
+            const parent = board
+            const piece1Clone = piece1.cloneNode( true )
+            const piece2Clone = piece2.cloneNode( true )
+
+            parent.replaceChild( piece1Clone, piece2 )
+            parent.replaceChild( piece2Clone, piece1 )
+
+            piece1Clone.classList.remove( "selected" )
+            piece2Clone.classList.remove( "selected" )
+            if ( !solved ) {
+                checkAnswer()
+            }
+        }
+
+        function handlePieceClick( event, piece ) {
+            if ( !selectedPiece ) {
+                selectedPiece = piece
+                selectedPiece.classList.add( "selected" )
+            } else if ( selectedPiece === piece ) {
+                selectedPiece.classList.remove( "selected" )
+                selectedPiece = null
+            } else {
+                swapPieces( selectedPiece, piece )
+                selectedPiece.classList.remove( "selected" )
+                selectedPiece = null
+            }
+        }
+
+        function getPiecePositions() {
+            let indexes = []
+            let board = document.querySelector( "#board" )
+            let pieces = board.childNodes
+            pieces.forEach( ( p ) => {
+                indexes.push( parseInt( p.getAttribute( 'n' ) ) )
+            } )
+            return indexes
+        }
+
+        function checkAnswer() {
+            fetch( '/api/checkanswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( {
+                    puzzle_id: puzzleID,
+                    answer: getPiecePositions(),
+                } ),
+            } ).then( response => response.json() ).then( data => {
+                if ( data.correct ) {
+                    solved = true
+                    if ( !data.expired ) {
+                        flashModal( data.winmessage, "green", "Solved :3", [ { text: "home", url: "/" }, { text: "stay", onclick: hideModal }, { text: "next", url: "/puzzle" } ] )
+                    }
+                    else {
+                        flashModal( data.winmessage, "yellow", "Solved", [ { text: "home", url: "/" }, { text: "stay", onclick: hideModal }, { text: "next", url: "/puzzle" } ] )
+                    }
+                    document.querySelector( ".nav-button.next > a" ).textContent = "next"
+                    timer_container.classList.add( "frozen" )
+                }
+            } )
+                .catch( error => {
+                    console.error( error )
+                } )
+        }
+
+        setUsername()
+        loadPuzzle()
+        window.onresize = resizeBoard
+    </script>
+</body>
+
+</html>

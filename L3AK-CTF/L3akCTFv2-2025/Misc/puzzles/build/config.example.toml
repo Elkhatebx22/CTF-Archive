@@ -1,0 +1,120 @@
+
+[[level]]
+flag = "flag{level_1}"
+solves_needed = 1
+puzzle_width = 1
+puzzle_height = 1
+time_limit_seconds = 60
+show_time_limit = false
+base_points = 100
+
+[[level.image]]
+path = "./path/to/image"
+title = "Art Title"
+artist = "Artist"
+url = "https://example.com"
+
+[[level]]
+flag = "flag{level_2}"
+solves_needed = 1
+puzzle_width = 1
+puzzle_height = 1
+time_limit_seconds = 1000
+show_time_limit = false
+base_points = 1000
+
+[[level.image]]
+path = "./path/to/image"
+title = "Art Title"
+artist = "Artist"
+url = "https://example.com"
+
+[[level]]
+flag = "flag{level_3}"
+solves_needed = 1
+puzzle_width = 1
+puzzle_height = 1
+time_limit_seconds = 180
+show_time_limit = false
+base_points = 3000
+
+[[level.image]]
+path = "./path/to/image"
+title = "Art Title"
+artist = "Artist"
+url = "https://example.com"
+
+[[level]]
+flag = "<a href=\"/downloads/puzzles.zip\" class=\"highlight\">download source code</a>"
+solves_needed = 1
+puzzle_width = 1
+puzzle_height = 1
+time_limit_seconds = 3600
+show_time_limit = false
+base_points = 5000
+
+[[level.image]]
+path = "./path/to/image"
+title = "Art Title"
+artist = "Artist"
+url = "https://example.com"
+
+[[level]]
+flag = "flag{level_5}"
+solves_needed = 1
+puzzle_width = 1
+puzzle_height = 1
+time_limit_seconds = 5
+show_time_limit = false
+base_points = 10000
+
+[[level.image]]
+path = "./path/to/image"
+title = "Art Title"
+artist = "Artist"
+url = "https://example.com"
+
+[general]
+ratelimit_ms = 100
+max_username_length = 15000
+min_username_length = 4
+username_blacklist = [
+    "#",
+    "$",
+    "%",
+    "&",
+    "'",
+    "*",
+    ",",
+    "-",
+    ".",
+    "/",
+    ":",
+    ";",
+    "?",
+    "@",
+    "\\",
+    "^",
+    "_",
+    "`",
+    "{",
+    "|",
+    "}",
+    "~",
+    " ",
+    "\"",
+    "<",
+    ">",
+    "SCRIPT",
+]
+border_width = 5
+admin_name = "therealmeowmeow"
+verify_points = 0xe926
+bind_address = "0.0.0.0:1353"
+application_url = "http://127.0.0.1:1353"
+
+[[general.winmessage]]
+text = "solved"
+
+[[general.expiredmessage]]
+text = "too late"

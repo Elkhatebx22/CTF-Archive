@@ -1,0 +1,6 @@
+services:
+  l3ak_adv_def:
+    build: .
+    ports:
+      - "5982:5982"
+    container_name: l3ak_adv_def

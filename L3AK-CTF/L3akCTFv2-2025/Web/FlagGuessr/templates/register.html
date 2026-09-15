@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlagGuessr</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/img/favicon.ico">
+    <script src="https://kit.fontawesome.com/081263bd39.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="content">
+        <div class="body">
+            <div class="logo-container">
+                <img src="/img/logo.png" width="60%" />
+                <h1>FlagGuessr</h1>
+            </div>
+            <div class="login-register-container">
+                <form class="login-register-form" action="/register" method="POST" enctype="multipart/form-data">
+                    <span><i class="fa-solid fa-user"></i> <input type="text" name="username" placeholder=" username..."
+                            class="text-input" required></span>
+                    <span><i class="fa-solid fa-user-secret"></i> <input type="text" name="display_name"
+                            placeholder=" display name..." class="text-input" required></span>
+                    <span><i class="fa-solid fa-key"></i> <input type="password" name="password"
+                            placeholder=" password..." class="text-input" required></span>
+                    <span><i class="fa-solid fa-flag"></i><label for="flag-upload" class="flag-upload">select
+                            flag file</label><input type="file" name="flag" class="file-input" accept=".txt"
+                            id="flag-upload" required></span>
+                    <span><input type="submit" value="Register" class="button-input"></span>
+                </form>
+                <span class="error-message-box"></span>
+                <span class="links-box">Already have an account? <a href="/login">login</a></span>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    let params = new URLSearchParams( document.location.search )
+    let err = params.get( "e" )
+    if ( err ) {
+        document.querySelector( ".login-register-container .error-message-box" ).textContent = err
+    }
+    history.replaceState( null, '', '/register' )
+
+    const flagUpload = document.querySelector( '#flag-upload' )
+    flagUpload.addEventListener( 'change', ( e ) => {
+        const [ file ] = e.target.files;
+        const { name: fileName, size } = file;
+        document.querySelector( '.flag-upload' ).textContent = fileName;
+    } );
+</script>

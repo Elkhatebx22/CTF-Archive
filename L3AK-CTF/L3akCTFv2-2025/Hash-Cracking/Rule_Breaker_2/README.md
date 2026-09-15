@@ -1,0 +1,35 @@
+# Rule Breaker 2
+
+- **Author:** Suvoni
+- **Category:** Hash-Cracking
+- **Solves:** 101
+
+## Description
+If you thought rules were easy after the last challenge, think again! I've concocted more devious password mangling rules to push the limits of your cracking knowledge (and possibly your CPU...): Password 1: Prepend 1 uppercase letter, Swap the first 2 characters, Rotate it to the right 3 times, Append a 4-digit year since 1900. Password 2: Lowercase the entire password. Apply a random caesar cipher shift to all the letters in the password. Then, replace each alphanumeric character with its right neighbor on the QWERTY keyboard. Finally, reverse it. Password 3: Split the password in half, toggle the case of every consonant in the first half, randomly toggle the case of all vowels in the second half, then interleave the halves together. Assume password has an even length and is no more than 14 characters. 2a07038481b64a934495e5a91d011ecbf278aba8c5263841e1d13f73975d5397 cd6e58d947e2f7ace23cb6d602daa1ae46934c3c1f4800bfd25e6af2b555f6f5 84b9e0298b1beb5236b7fcd2dd67e67abf62d16fe6d591024178790238cb4453 Use the rockyou.txt wordlist. Flag format: L3AK{pass1_pass2_pass3} We understand that there has been some confusion with Hash Cracking/Rule Breaker 2 due to some linguistic differences in how certain languages categorize consonants versus vowels. For the purposes of this challenge, for rule 3, the letter Y is considered a vowel. Author: Suvoni
+
+---
+
+## solver summary
+
+### discovery
+
+- **Tech Stack:**
+    1. 
+    2. 
+
+- **Endpoints:**
+    1. 
+    2. 
+
+- **Vulnerabilities:**
+    1. 
+    2. 
+
+### PoC/Exploitation
+
+1. 
+2. 
+
+### flag
+
+- `CTF{...}`

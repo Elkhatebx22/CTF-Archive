@@ -1,0 +1,8 @@
+services:
+  puzzles:
+    restart: always
+    container_name: puzzles
+    build:
+      context: .
+    ports:
+      - "1353:1353"

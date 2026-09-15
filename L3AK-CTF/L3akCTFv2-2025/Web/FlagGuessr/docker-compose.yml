@@ -1,0 +1,8 @@
+services:
+  flagguessr:
+    restart: always
+    container_name: flagguessr
+    build:
+      context: .
+    ports:
+      - "5555:5555"

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <span><a href="/">Home</a></span>
+            <span><a href="/help">Help</a></span>
+            <span><a href="/puzzle">Play</a></span>
+            <span><a href="/leaderboard">Leaderboard</a></span>
+            <span class="username-link hide"><a href="/profile"></a></span>
+        </div>
+        <div class="body-container">
+            <div class="leaderboard-container">
+                <div class="leaderboard-header">
+                    <h2>Top Players!</h2>
+                </div>
+                <div class="leaderboard-body hide">
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name</th>
+                                <th>Level</th>
+                                <th>Account Age</th>
+                                <th>Solves</th>
+                                <th>Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-table-body">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="puzzle-board-loading">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const leaderboard = document.querySelector( "#leaderboard-table-body" )
+
+
+        function setUsername() {
+            let savedName = localStorage.getItem( "username" )
+            if ( savedName != undefined && savedName != "" ) {
+                document.querySelector( ".username-link > a" ).textContent = savedName
+                document.querySelector( ".username-link" ).classList.remove( "hide" )
+            }
+        }
+
+        async function loadLeaderboard() {
+            fetch( "/api/getplayers" ).then( response => response.json() ).then( data => {
+                leaderboard.innerHTML = ""
+                let i = 1
+                data.users.forEach( user => {
+                    let userRow = document.createElement( "tr" )
+
+                    let userRank = document.createElement( "td" )
+                    let userName = document.createElement( "td" )
+                    let userLevel = document.createElement( "td" )
+                    let userAccountAge = document.createElement( "td" )
+                    let userSolves = document.createElement( "td" )
+                    let userPoints = document.createElement( "td" )
+
+                    let userLink = document.createElement( "a" )
+                    userLink.textContent = user.name
+                    userLink.href = `/profile/${user.uid}`
+                    userLink.classList.add( "highlight" )
+
+                    userName.appendChild( userLink )
+                    userRank.textContent = `${i}`
+                    userLevel.textContent = `${user.level}`
+                    userAccountAge.textContent = user.account_age
+                    userSolves.textContent = `${user.solves}`
+                    userPoints.textContent = `${user.points}`
+
+                    userRow.appendChild( userRank )
+                    userRow.appendChild( userName )
+                    userRow.appendChild( userLevel )
+                    userRow.appendChild( userAccountAge )
+                    userRow.appendChild( userSolves )
+                    userRow.appendChild( userPoints )
+
+                    leaderboard.appendChild( userRow )
+                    i += 1
+                } );
+                document.querySelector( ".puzzle-board-loading" ).classList.add( "hide" )
+                document.querySelector( ".leaderboard-body" ).classList.remove( "hide" )
+            } ).catch( error => {
+                console.log( `fetch error: ${error}` )
+            } )
+        }
+
+        setUsername()
+        loadLeaderboard()
+    </script>
+</body>
+
+</html>

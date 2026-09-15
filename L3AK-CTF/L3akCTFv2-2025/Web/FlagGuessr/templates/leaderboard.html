@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlagGuessr</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/img/favicon.ico">
+    <script src="https://kit.fontawesome.com/081263bd39.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <div class="nav-links">
+                <span><a href="/">Home</a></span>
+                <span><a href="/leaderboard">Leaderboard</a></span>
+                <span><a href="/guesses">My Guesses</a></span>
+                <span><a href="/profile">Profile</a></span>
+            </div>
+
+            <span><a href="/logout">Logout</a></span>
+        </div>
+        <div class="body">
+            <div class="logo-container">
+                <img src="/img/logo.png" width="60%" />
+            </div>
+            <div class="leaderboard-container">
+                <h2>Leaderboard</h2>
+                <span class="inline-error-box"></span>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Guess Count</th>
+                            <th>Flags Found</th>
+                            <th>Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody class="users-table-body">
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<script>
+    const errorField = document.querySelector( ".inline-error-box" )
+    const usersTable = document.querySelector( ".users-table-body" )
+
+
+    var errorTextTimeout = null
+    function setErrorText( text ) {
+        errorField.textContent = text
+        if ( errorTextTimeout ) {
+            clearTimeout( errorTextTimeout )
+        }
+        errorTextTimeout = setTimeout( () => {
+            errorField.textContent = ""
+        }, 5000 )
+    }
+
+    function getLeaderboard() {
+        fetch( "/api/leaderboard" ).then( resp => resp.json().then( resp => {
+            let users = resp.users
+            if ( users ) {
+                usersTable.childNodes.forEach( c => {
+                    usersTable.removeChild( c )
+                } )
+                users.forEach( u => {
+                    let userRow = document.createElement( "tr" )
+                    let usernameCell = document.createElement( "td" )
+                    let guessesCell = document.createElement( "td" )
+                    let foundCell = document.createElement( "td" )
+                    let accCell = document.createElement( "td" )
+
+                    let usernameLink = document.createElement( "a" )
+                    usernameLink.href = `/users/${u.user_id}`
+                    usernameLink.textContent = u.username
+                    usernameCell.appendChild( usernameLink )
+
+                    guessesCell.innerText = u.flags_checked
+                    foundCell.innerText = u.flags_found
+
+                    let acc = 0
+                    if ( u.flags_checked > 0 ) {
+                        acc = ( u.flags_found / u.flags_checked ) * 100
+                    }
+                    accCell.innerText = `${acc}%`
+
+                    userRow.appendChild( usernameCell )
+                    userRow.appendChild( guessesCell )
+                    userRow.appendChild( foundCell )
+                    userRow.appendChild( accCell )
+
+                    usersTable.appendChild( userRow )
+                } )
+            }
+        } ).catch( e => { setErrorText( e ) } ) ).catch( e => { setErrorText( e ) } )
+    }
+
+    getLeaderboard()
+
+</script>

@@ -1,0 +1,402 @@
+:root {
+    --theme-color: #29393b;
+    height: 100%;
+}
+
+@font-face {
+    font-family: ChakraPetch;
+    src: url('/css/font.ttf');
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    background-color: var(--theme-color);
+    margin: 0;
+    font-family: ChakraPetch, monospace;
+    color: white;
+}
+
+.content {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.header {
+    height: 5%;
+    background-color: color-mix(in srgb, var(--theme-color) 60%, black 40%);
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+
+    .nav-links {
+        display: flex;
+    }
+
+    span {
+        height: 100%;
+        background-color: color-mix(in srgb, var(--theme-color) 80%, black 20%);
+        display: inline-flex;
+        align-items: center;
+        font-weight: bold;
+
+        a {
+            text-decoration: none;
+            color: white;
+            padding: 20px;
+            width: 100%;
+        }
+
+        :hover {
+            background-color: color-mix(in srgb, var(--theme-color) 70%, black 30%);
+        }
+    }
+}
+
+.body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px;
+}
+
+.logo-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+        font-size: 4em;
+        margin-top: 20px;
+    }
+}
+
+.description-container {
+    font-size: 2em;
+}
+
+.login-register-container {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid color-mix(in srgb, var(--theme-color) 60%, black 40%);
+    display: flex;
+    gap: 20px;
+    min-width: 350px;
+    flex-direction: column;
+}
+
+.login-register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+
+    span {
+        display: flex;
+        justify-content: space-between;
+        height: 30px;
+        align-items: center;
+
+        .text-input {
+            width: 80%;
+            height: 100%;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 2px;
+            font-family: ChakraPetch, monospace;
+            font-size: 1.5em;
+            background-color: color-mix(in srgb, var(--theme-color) 80%, white 20%);
+        }
+
+        i {
+            margin-left: 5%;
+        }
+
+        .button-input {
+            margin: auto;
+            height: 50px;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+            font-family: ChakraPetch, monospace;
+            color: white;
+            cursor: pointer;
+            font-size: 1.5em;
+            background-color: color-mix(in srgb, var(--theme-color) 80%, white 20%);
+
+            &:hover {
+                background-color: color-mix(in srgb, var(--theme-color) 90%, white 10%);
+            }
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .flag-upload {
+            width: 80%;
+            height: 100%;
+            border: none;
+            border-radius: 5px;
+            padding: 2px;
+            text-align: center;
+            font-family: ChakraPetch, monospace;
+            font-size: 1.5em;
+            align-content: center;
+            cursor: pointer;
+            color: gray;
+            background-color: color-mix(in srgb, var(--theme-color) 80%, white 20%);
+
+            &:hover {
+                background-color: color-mix(in srgb, var(--theme-color) 90%, white 10%);
+            }
+
+        }
+
+        :last-of-type {
+            margin-top: 10px;
+        }
+    }
+}
+
+.error-message-box {
+    color: red;
+    text-align: center;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+.inline-error-box {
+    color: red;
+    text-align: center;
+}
+
+.links-box {
+    text-align: center;
+
+    a {
+        color: grey;
+    }
+}
+
+.profile-container,
+.leaderboard-container,
+.user-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    gap: 20px;
+    min-width: 60%;
+    align-items: center;
+
+    h2 {
+        font-size: 2em;
+    }
+}
+
+.profile-stats {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    span {
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: space-between;
+
+        .stat-value {
+            text-align: center;
+        }
+    }
+}
+
+.desc-text {
+    color: gray;
+    background-color: color-mix(in srgb, var(--theme-color) 90%, black 10%);
+    resize: none;
+    width: 100%;
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    margin: auto;
+    font-size: 2em;
+}
+
+.profile-description {
+    display: flex;
+    margin-bottom: 20px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.cert-container,
+.report-container {
+    width: 60%;
+    margin-top: 40px;
+
+
+    button {
+        background-color: color-mix(in srgb, var(--theme-color) 70%, white 30%);
+        width: 100%;
+        height: 40px;
+        border: none;
+        border-radius: 2px;
+        font-family: ChakraPetch, monospace;
+        font-size: 1.5em;
+        color: white;
+        cursor: pointer;
+
+        &:hover {
+            background-color: color-mix(in srgb, var(--theme-color) 80%, white 20%);
+        }
+
+        &:active {
+            background-color: color-mix(in srgb, var(--theme-color) 90%, white 10%);
+        }
+    }
+}
+
+.leaderboard-table,
+.guesses-table {
+    width: 100%;
+}
+
+.users-table-body,
+.guesses-table-body {
+    background-color: color-mix(in srgb, var(--theme-color) 95%, black 5%);
+
+    tr {
+        height: 40px;
+    }
+
+    a {
+        text-decoration: none;
+        color: gray;
+    }
+
+    td {
+        text-align: center;
+    }
+}
+
+.guess-flag-container {
+    width: 60%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .guess-flag-input {
+        width: 70%;
+        height: 100%;
+        margin: 0px;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        font-size: 2em;
+        font-family: ChakraPetch, monospace;
+        background-color: color-mix(in srgb, var(--theme-color) 90%, white 10%);
+    }
+
+    .guess-flag-submit {
+        width: 25%;
+        height: 100%;
+        margin: 0px;
+        border: none;
+        color: white;
+        font-size: 1.5em;
+        font-weight: bold;
+        font-family: ChakraPetch, monospace;
+        border-radius: 4px;
+        background-color: color-mix(in srgb, var(--theme-color) 70%, black 30%);
+
+        &.disabled {
+            background-color: gray;
+        }
+
+        &:hover:not(&.disabled) {
+            background-color: color-mix(in srgb, var(--theme-color) 80%, black 20%);
+        }
+
+        &:active:not(&.disabled) {
+            background-color: color-mix(in srgb, var(--theme-color) 90%, black 10%);
+        }
+
+    }
+}
+
+.guesses-table-body {
+    .download-guess-button {
+
+        height: 100%;
+        margin: 0px;
+        border: none;
+        color: white;
+        font-size: 1.2em;
+        font-weight: bold;
+        font-family: ChakraPetch, monospace;
+        border-radius: 4px;
+        background-color: color-mix(in srgb, var(--theme-color) 70%, white 30%);
+
+        &.disabled {
+            background-color: gray;
+        }
+
+        &:hover:not(&.disabled) {
+            background-color: color-mix(in srgb, var(--theme-color) 80%, white 20%);
+        }
+
+        &:active:not(&.disabled) {
+            background-color: color-mix(in srgb, var(--theme-color) 90%, white 10%);
+        }
+    }
+
+    td.correct {
+        background-color: #71f771;
+    }
+
+    td.incorrect {
+        background-color: #f77171;
+    }
+}
+
+.alert-bg {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #00000088;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.hidden {
+        display: none;
+    }
+
+    .alert-modal {
+        width: 50%;
+        height: 50%;
+        background-color: #333333;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .modal-content {
+            background-color: #444444;
+            width: 80%;
+            padding: 20px;
+        }
+    }
+}

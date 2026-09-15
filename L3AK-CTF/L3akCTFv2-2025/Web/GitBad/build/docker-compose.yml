@@ -1,0 +1,13 @@
+
+services:
+  gitbad:
+    build: .
+    container_name: gitbad_challenge
+    restart: unless-stopped
+    ports:
+      - "80:80"  
+    environment:
+      - MONGODB_URI=mongodb://localhost:27017/gitbad
+      - FLASK_ENV=production
+      - Flag=L3AK{5k1ll_15sU3_5p0773d_Y0U_N33D_B3773R_D3V_T34M!!!}
+

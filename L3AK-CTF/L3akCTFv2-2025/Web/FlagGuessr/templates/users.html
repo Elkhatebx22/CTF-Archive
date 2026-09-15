@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlagGuessr</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/img/favicon.ico">
+    <script src="https://kit.fontawesome.com/081263bd39.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <div class="nav-links">
+                <span><a href="/">Home</a></span>
+                <span><a href="/leaderboard">Leaderboard</a></span>
+                <span><a href="/guesses">My Guesses</a></span>
+                <span><a href="/profile">Profile</a></span>
+            </div>
+
+            <span><a href="/logout">Logout</a></span>
+        </div>
+        <div class="body">
+            <div class="logo-container">
+                <img src="/img/logo.png" width="60%" />
+            </div>
+            <div class="user-container">
+                <h2 class="username-field">Meowuser1234</h2>
+                <span class="inline-error-box"></span>
+                <div class="guess-flag-container">
+                    <input type="text" class="guess-flag-input" placeholder="flag{...}" id="guess-flag-input">
+                    <button onclick=makeGuess() class="guess-flag-submit">Guess</button>
+                </div>
+                <h3>Guess History</h3>
+                <table class="guesses-table">
+                    <thead>
+                        <tr>
+                            <th>Guess ID</th>
+                            <th>Correct</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="guesses-table-body">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="report-container">
+                <button onclick=reportUser()>Report User</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert-bg hidden" onclick=hideModal()>
+        <div class="alert-modal">
+            <h2>Guess Summary</h2>
+            <span class="modal-content"></span>
+        </div>
+    </div>
+</body>
+
+<script>
+    const errorField = document.querySelector( ".inline-error-box" )
+    const guessesTable = document.querySelector( ".guesses-table-body" )
+    const guessInput = document.querySelector( "#guess-flag-input" )
+    const guessButton = document.querySelector( ".guess-flag-submit" )
+    const usernameField = document.querySelector( ".username-field" )
+    const guessContainer = document.querySelector( ".guess-flag-container" )
+    const modalBg = document.querySelector( ".alert-bg" )
+    const modalContent = document.querySelector( ".modal-content" )
+    const reportContainer = document.querySelector( ".report-container" )
+
+    var errorTextTimeout = null
+    function setErrorText( text ) {
+        errorField.textContent = text
+        if ( errorTextTimeout ) {
+            clearTimeout( errorTextTimeout )
+        }
+        errorTextTimeout = setTimeout( () => {
+            errorField.textContent = ""
+        }, 5000 )
+    }
+
+    let path = window.location.pathname
+    let userId = path.split( "/" )[ 2 ]
+
+    function hideModal() {
+        modalBg.classList.add( "hidden" )
+    }
+
+    function showModal( text ) {
+        modalContent.textContent = text
+        modalBg.classList.remove( "hidden" )
+    }
+
+    function viewGuess( guessID ) {
+        fetch( `/api/users/${userId}/guesses/${guessID}` ).then( resp => resp.blob().then( resp => {
+            resp.text().then( t => { showModal( t ) } )
+        } ).catch( e => { setErrorText( e ) } ) ).catch( e => { setErrorText( e ) } )
+    }
+
+    function reportUser() {
+        fetch( `/api/report`, { method: "POST", body: JSON.stringify( { "url": window.location.pathname } ) } ).then( resp => resp.json().then( resp => {
+            setErrorText( JSON.stringify( resp ) )
+        } ).catch( e => { setErrorText( e ) } ) ).catch( e => { setErrorText( e ) } )
+    }
+
+    function getUserGuesses() {
+        fetch( `/api/users/${userId}/guesses` ).then( resp => resp.json().then( resp => {
+            let downloadEnabled = resp.download_enabled
+            let guesses = resp.guesses
+            if ( guesses ) {
+                guessesTable.childNodes.forEach( c => {
+                    guessesTable.removeChild( c )
+                } )
+                guesses.forEach( guess => {
+                    let guessRow = document.createElement( "tr" )
+
+                    let idCell = document.createElement( "td" )
+                    let correctCell = document.createElement( "td" )
+                    let actionsCell = document.createElement( "td" )
+
+                    idCell.textContent = guess.guess_id
+                    if ( guess.correct ) {
+                        correctCell.textContent = "True"
+                        correctCell.classList.add( "correct" )
+                    } else {
+                        correctCell.textContent = "False"
+                        correctCell.classList.add( "incorrect" )
+                    }
+
+                    if ( downloadEnabled && guess.correct ) {
+                        let downloadButton = document.createElement( "button" )
+                        downloadButton.classList.add( "download-guess-button" )
+                        downloadButton.onclick = () => { viewGuess( guess.guess_id ) }
+                        downloadButton.textContent = "View"
+                        actionsCell.appendChild( downloadButton )
+                    }
+
+                    guessRow.appendChild( idCell )
+                    guessRow.appendChild( correctCell )
+                    guessRow.appendChild( actionsCell )
+
+                    guessesTable.appendChild( guessRow )
+                } )
+            }
+        } ).catch( e => { setErrorText( e ) } ) ).catch( e => { setErrorText( e ) } )
+    }
+
+    function makeGuess() {
+        let formData = new FormData()
+        formData.append( 'flag', guessInput.value )
+        fetch( `/api/users/${userId}/checkflag`, { method: 'POST', body: formData } ).then( resp => resp.json().then( resp => {
+            if ( resp.correct ) {
+                guessInput.setAttribute( "disabled", true )
+                guessInput.setAttribute( "placeholder", "already found" )
+                guessButton.setAttribute( "disabled", true )
+                guessButton.classList.add( "disabled" )
+            } else {
+                setErrorText( JSON.stringify( resp ) )
+            }
+        } ).catch( e => { setErrorText( e ) } ) ).catch( e => { setErrorText( e ) } )
+    }
+
+    function getUser() {
+        fetch( `/api/users/${userId}` ).then( resp => resp.json().then( resp => {
+            usernameField.textContent = resp.username
+            if ( resp.flag_found ) {
+                guessInput.setAttribute( "disabled", true )
+                guessInput.setAttribute( "placeholder", "already found" )
+                guessButton.setAttribute( "disabled", true )
+                guessButton.classList.add( "disabled" )
+            }
+            if ( resp.is_self ) {
+                guessContainer.setAttribute( "style", "display: none !important;" )
+                reportContainer.setAttribute( "style", "display: none !important;" )
+            }
+        } ).catch( e => { setErrorText( e ) } ) ).catch( e => { setErrorText( e ) } )
+    }
+
+    getUser()
+    getUserGuesses()
+
+</script>

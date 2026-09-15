@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option go_package = "flagdle/pb";
+
+message CellID {
+    int32 row = 1;
+    int32 col = 2;
+}
+
+message Game {
+    string target = 1;
+    int32 allowedGuesses = 2;
+    repeated bytes rowHashes = 3;
+    bytes flagKey = 4;
+    repeated CellID flagSelectors = 5;
+    string gameID = 6;
+}
+
+message Config {
+    repeated Game games = 1;
+    int32 wordLength = 3;
+    bytes flagHash = 4;
+    repeated string wordlist = 5;
+}
+
+message EncryptedSettings {
+    enum EncryptionMode {
+        EncryptionModeNone = 0;
+        EncryptionModeXOR = 1;
+        EncryptionModeAES = 2;
+    }
+    EncryptionMode encryptionMode = 1;
+    bytes key = 2;
+    bytes gameSettings = 3;
+}

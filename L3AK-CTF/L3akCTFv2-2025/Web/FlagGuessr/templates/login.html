@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlagGuessr</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/img/favicon.ico">
+    <script src="https://kit.fontawesome.com/081263bd39.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="content">
+        <div class="body">
+            <div class="logo-container">
+                <img src="/img/logo.png" width="60%" />
+                <h1>FlagGuessr</h1>
+            </div>
+            <div class="login-register-container">
+                <form class="login-register-form" action="/login" method="POST">
+                    <span><i class="fa-solid fa-user"></i> <input type="text" name="username" placeholder=" username..."
+                            class="text-input" required></span>
+                    <span><i class="fa-solid fa-key"></i> <input type="password" name="password"
+                            placeholder=" password..." class="text-input" required></span>
+                    <span><input type="submit" value="Log in" class="button-input"></span>
+                </form>
+                <span class="error-message-box"></span>
+                <span class="links-box">Need an account? <a href="/register">register</a></span>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    let params = new URLSearchParams( document.location.search )
+    let err = params.get( "e" )
+    if ( err ) {
+        document.querySelector( ".login-register-container .error-message-box" ).textContent = err
+    }
+    history.replaceState( null, '', '/login' )
+</script>

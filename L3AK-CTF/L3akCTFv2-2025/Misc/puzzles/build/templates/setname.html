@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <span><a href="/">Home</a></span>
+            <span><a href="/puzzle">Play</a></span>
+            <span><a href="/help">Help</a></span>
+        </div>
+        <div class="body-container">
+            <h1>Puzzles!</h1>
+            <div class="set-username">
+                <h3>pick a name:</h3>
+                <input type="text" id="username" name="name" value="" placeholder="meowmeow">
+                <div class="submit-button" onclick="setName()"><span>Start</span></div>
+                <span class="error-message hide">error: woof</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        function setUsername() {
+            let savedName = localStorage.getItem( "username" )
+            if ( savedName != undefined && savedName != "" ) {
+                document.querySelector( ".username-link > a" ).textContent = savedName
+                document.querySelector( ".username-link" ).classList.remove( "hide" )
+            }
+        }
+        async function setName() {
+            let newName = document.querySelector( "#username" ).value
+            fetch( '/api/setname', {
+                method: 'POST',
+                redirect: "follow",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( {
+                    name: newName
+                } ),
+            } ).then( response => response.json() ).then( data => {
+                if ( data.error ) {
+                    document.querySelector( ".error-message" ).textContent = data.error
+                    document.querySelector( ".error-message" ).classList.remove( "hide" )
+                } else {
+                    localStorage.setItem( "username", data.name )
+                    localStorage.setItem( "userid", data.uid )
+                    location.reload( true )
+                }
+            } )
+                .catch( error => {
+                    console.error( error );
+                } );
+        }
+
+        setUsername()
+    </script>
+</body>
+
+</html>

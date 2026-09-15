@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlagGuessr</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/img/favicon.ico">
+    <script src="https://kit.fontawesome.com/081263bd39.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <div class="nav-links">
+                <span><a href="/">Home</a></span>
+                <span><a href="/leaderboard">Leaderboard</a></span>
+                <span><a href="/guesses">My Guesses</a></span>
+                <span><a href="/profile">Profile</a></span>
+            </div>
+
+            <span><a href="/logout">Logout</a></span>
+        </div>
+        <div class="body">
+            <div class="logo-container">
+                <img src="/img/logo.png" width="60%" />
+            </div>
+            <div class="profile-container">
+                <h2 class="profile-displayname"></h2>
+                <span class="inline-error-box"></span>
+                <div class="profile-description"><textarea class="desc-text"
+                        placeholder="set profile description..."></textarea></div>
+                <div class="profile-stats">
+                    <span class="profile-stats-username">
+                        <h3>Username:</h3><span class="stat-value"></span>
+                    </span>
+                    <span class="profile-stats-id">
+                        <h3>User ID:</h3><span class="stat-value"></span>
+                    </span>
+                    <span class="profile-stats-admin">
+                        <h3>Admin:</h3><span class="stat-value"></span>
+                    </span>
+                    <span class="profile-stats-checked">
+                        <h3>Flags Guessed:</h3><span class="stat-value"></span>
+                    </span>
+                    <span class="profile-stats-found">
+                        <h3>Flags Found:</h3><span class="stat-value"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="cert-container">
+                <button onclick=downloadCert()>Download Certificate</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    const displayNameField = document.querySelector( ".profile-displayname" )
+    const errorField = document.querySelector( ".inline-error-box" )
+    const descriptionField = document.querySelector( ".desc-text" )
+    const usernameField = document.querySelector( ".profile-stats-username .stat-value" )
+    const userIdField = document.querySelector( ".profile-stats-id .stat-value" )
+    const adminField = document.querySelector( ".profile-stats-admin .stat-value" )
+    const flagsCheckedField = document.querySelector( ".profile-stats-checked .stat-value" )
+    const flagsFoundField = document.querySelector( ".profile-stats-found .stat-value" )
+
+    var errorTextTimeout = null
+    function setErrorText( text ) {
+        errorField.textContent = text
+        if ( errorTextTimeout ) {
+            clearTimeout( errorTextTimeout )
+        }
+        errorTextTimeout = setTimeout( () => {
+            errorField.textContent = ""
+        }, 5000 )
+    }
+
+    function getProfile() {
+        fetch( "/api/profile" ).then( resp => resp.json().then( resp => {
+            displayNameField.textContent = resp.display_name
+            if ( resp.description ) {
+                descriptionField.textContent = resp.description
+            } else {
+                descriptionField.textContent = ""
+            }
+            usernameField.textContent = resp.username
+            userIdField.textContent = resp.user_id
+            adminField.textContent = resp.user_kind !== undefined ? resp.user_kind == 1 ? "True" : "False" : ""
+            flagsCheckedField.textContent = resp.flags_checked
+            flagsFoundField.textContent = resp.flags_found
+        } ).catch( e => { setErrorText( e ) } ) ).catch( e => { setErrorText( e ) } )
+    }
+
+    function setProfileText( text ) {
+        fetch( "/api/profile", { method: "POST", body: JSON.stringify( { description: text } ) } ).then( resp => resp.json().then( resp => { } ).catch( e => { setErrorText( e ) } ) ).catch( e => { setErrorText( e ) } )
+    }
+
+    descriptionField.addEventListener( 'change', ( e ) => {
+        setProfileText( descriptionField.value )
+    } )
+
+    function downloadCert() {
+        fetch( "/api/certificate" ).then( resp => resp.blob().then( body => {
+            if ( resp.status != 200 ) {
+                body.text().then( t => { setErrorText( t ) } )
+            } else {
+                let url = URL.createObjectURL( body )
+                let a = document.createElement( "a" )
+                a.style = "display: none;"
+                a.href = url
+                a.download = "certificate.png"
+                document.body.appendChild( a )
+                a.click()
+                document.body.removeChild( a )
+            }
+        } ).catch( e => { setErrorText( e ) } ) ).catch( e => { setErrorText( e ) } )
+    }
+
+    getProfile()
+</script>
