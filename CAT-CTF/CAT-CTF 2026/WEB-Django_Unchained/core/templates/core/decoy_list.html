@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>{{ title }}</h1>
+<p class="muted">{{ project.name }}</p>
+{% for row in rows %}
+  <div class="panel">{{ row }}</div>
+{% empty %}
+  <p>No entries.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Django Unchained</h1>
+  <p class="muted">A release desk for sharp projects, stubborn links, and cats that refuse to stay collared.</p>
+</section>
+{% for project in projects %}
+  <div class="panel">
+    <h2>{{ project.name }}</h2>
+    <p>{{ project.summary }}</p>
+    <p class="muted">site: {{ project.slug }}.cat26.local | approved: {{ project.approved }}</p>
+  </div>
+{% empty %}
+  <p>No projects yet.</p>
+{% endfor %}
+{% endblock %}

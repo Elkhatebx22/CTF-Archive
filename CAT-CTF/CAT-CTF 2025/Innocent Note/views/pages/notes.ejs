@@ -1,0 +1,27 @@
+<%- include('../partials/header') %>
+
+<div class="notes-container">
+    <h2>Your Notes</h2>
+    <div class="notes-list">
+        <% if (notes.length) { %>
+            <ul>
+                <% notes.forEach(note => { %>
+                    <li>
+                        <div class="note-list-content"><%- note.content %></div>
+                        <a href="/notes/view?note_id=<%= note.id %>" class="view-note-link">View Details</a>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>You have no notes yet.</p>
+        <% } %>
+    </div>
+
+    <h3>Add a New Note</h3>
+    <form action="/notes" method="POST">
+        <textarea name="content" placeholder="Your safe note here..."></textarea>
+        <button type="submit">Add Note</button>
+    </form>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Edit HTML Note{% endblock %}
+{% block content %}
+<h2>Edit Your Note Content</h2>
+{% if error %}
+  <p style="color:red;">{{ error }}</p>
+{% endif %}
+<form method="POST" action="/notes">
+  <textarea name="content" style="width:100%; height:300px;" placeholder="Enter your Note content here...">{{ content|safe }}</textarea><br>
+  <button type="submit">Save</button>
+</form>
+
+<h3>Preview</h3>
+<div style="padding:10px; border:1px solid #ccc;">
+</div>
+
+<script>
+  const form = document.forms[0];
+  const textarea = form.elements['content'];
+  const preview = document.querySelector('div[style*="border:1px solid"]');
+
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+
+    const content = textarea.value;
+
+    const met = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ content }),
+    };
+
+    try {
+      const response = await fetch("/notes", met);
+      if (!response.ok) {
+        const errText = await response.text();
+        alert("Error saving note: " + errText);
+        return;
+      }
+      preview.innerHTML = content;
+    } catch (err) {
+      alert("Network error: " + err.message);
+    }
+  };
+
+  // Update preview live on input
+  textarea.addEventListener("input", () => {
+    preview.innerHTML = textarea.value;
+  });
+</script>
+{% endblock %}

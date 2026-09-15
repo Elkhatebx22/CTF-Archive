@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>{{ project.name }} Review</h1>
+<p class="muted">Ticket #{{ ticket.id }}: {{ ticket.state }}</p>
+{% for note, rendered in rendered_notes %}
+  <div class="panel"><pre>{{ rendered|force_escape }}</pre></div>
+{% empty %}
+  <p>No attached notes.</p>
+{% endfor %}
+{% endblock %}

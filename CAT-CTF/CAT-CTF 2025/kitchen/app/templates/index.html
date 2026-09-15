@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Home - My Notes App{% endblock %}
+{% block content %}
+<h1>Welcome to My Notes App</h1>
+<p>A simple app to register, login and save your notes.</p>
+{% if session.username %}
+<p>Hello, {{ session.username }}! Go to <a href="{{ url_for('notes_view') }}">your notes</a>.</p>
+{% else %}
+<p>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a>.</p>
+{% endif %}
+{% endblock %}

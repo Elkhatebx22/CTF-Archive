@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flagtionary</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    form {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+    }
+
+    label {
+      display: block;
+      margin: 1rem 0 0.5rem;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.6rem;
+      font-size: 16px;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+      background-color: #2196F3;
+      color: white;
+    }
+
+    button:hover {
+      background-color: #1e87dc;
+    }
+
+    #message {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Flagtionary</h1>
+  <p>Search for two-words abbreviations like: TS, FD, JS, PW</p>
+
+  <form id="dictionaryForm" onsubmit="return false;">
+    <label for="search">Search Meaning</label>
+    <input type="text" id="search" name="search" placeholder="Enter word to search" />
+
+    <button id="searchBtn" type="button" onclick="handleSearch()">Search</button>
+
+    <div id="message"></div>
+  </form>
+
+  <script>
+function handleSearch() {
+  const search = document.getElementById("search").value.trim();
+  if (!search) return showMessage("Please enter a word to search.", true);
+
+  fetch("/api/search", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ word: search })
+  })
+  .then(async res => {
+    const data = await res.text();
+
+    if (data === "Some security violation detected") {
+      showMessage(data, true);
+    } else if (data === "None") {
+      showMessage("❌ Word not found", true);
+    } else if (res.status === 400) {
+      showMessage("❌ Failed to search.", true);
+    } else {
+      showMessage(data);
+    }
+  })
+  .catch(() => showMessage("❌ Failed to search.", true));
+}
+
+function showMessage(msg, isError = false) {
+      const messageBox = document.getElementById("message");
+      messageBox.textContent = msg;
+      messageBox.style.color = isError ? "red" : "green";
+    }
+  </script>
+</body>
+</html>

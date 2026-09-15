@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wizard King</title>
+<style>
+  * { box-sizing: border-box; }
+
+  :root {
+    --bg: #060705;
+    --panel: rgba(18, 17, 13, 0.94);
+    --ink: #fff3d3;
+    --muted: #c5b78f;
+    --line: #80672f;
+    --gold: #e3b64f;
+    --gold-soft: #f7dc84;
+    --clover: #4fb46a;
+    --anti: #8d3fd1;
+    --danger: #e46f63;
+    --blue: #79aeea;
+    --shadow: rgba(0, 0, 0, 0.42);
+  }
+
+  body {
+    background:
+      linear-gradient(115deg, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.86)),
+      url("https://bclover.jp/images/special/750_1334.jpg") center 12% / min(760px, 95vw) auto no-repeat fixed,
+      radial-gradient(circle at 10% 0%, rgba(141, 63, 209, 0.18), transparent 32%),
+      radial-gradient(circle at 88% 8%, rgba(79, 180, 106, 0.18), transparent 34%),
+      linear-gradient(135deg, #060705 0%, #151009 50%, #06100a 100%);
+    color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  body::before {
+    background:
+      linear-gradient(120deg, transparent 0 44%, rgba(227, 182, 79, 0.08) 45% 46%, transparent 47%),
+      linear-gradient(60deg, transparent 0 48%, rgba(79, 180, 106, 0.07) 49% 50%, transparent 51%);
+    content: "";
+    inset: 0;
+    pointer-events: none;
+    position: fixed;
+  }
+
+  header {
+    background: rgba(9, 9, 7, 0.95);
+    border-bottom: 1px solid rgba(227, 182, 79, 0.48);
+    box-shadow: 0 14px 34px var(--shadow);
+    padding: 18px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .topbar {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .brand {
+    color: var(--gold-soft);
+    font-size: 24px;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    border: 1px solid var(--gold);
+    color: var(--clover);
+    display: inline-grid;
+    font-size: 15px;
+    height: 30px;
+    margin-right: 9px;
+    place-items: center;
+    text-shadow: 0 0 14px rgba(79, 180, 106, 0.8);
+    width: 30px;
+  }
+
+  .session {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .route-board {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .route-group {
+    background: rgba(25, 21, 14, 0.8);
+    border: 1px solid rgba(128, 103, 47, 0.64);
+    padding: 10px;
+  }
+
+  .route-group h2 {
+    color: var(--gold-soft);
+    font-size: 14px;
+    margin: 0 0 8px;
+  }
+
+  .route-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  a,
+  .route-chip {
+    color: var(--gold-soft);
+  }
+
+  .route-chip,
+  .badge {
+    background: rgba(8, 10, 7, 0.78);
+    border: 1px solid rgba(227, 182, 79, 0.4);
+    color: var(--ink);
+    display: inline-block;
+    font-size: 12px;
+    line-height: 1.2;
+    padding: 6px 8px;
+    text-decoration: none;
+  }
+
+  .route-chip.post {
+    color: var(--muted);
+  }
+
+  main {
+    margin: 28px auto;
+    max-width: 1060px;
+    padding: 0 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero {
+    align-items: stretch;
+    background:
+      linear-gradient(90deg, rgba(7, 8, 6, 0.9), rgba(28, 24, 15, 0.8)),
+      radial-gradient(circle at 74% 35%, rgba(79, 180, 106, 0.28), transparent 30%);
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 42px var(--shadow);
+    display: grid;
+    gap: 22px;
+    grid-template-columns: 1fr 250px;
+    margin-bottom: 20px;
+    min-height: 280px;
+    padding: 26px;
+  }
+
+  .hero h1 {
+    color: var(--gold-soft);
+    font-size: 48px;
+    margin: 0 0 10px;
+  }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 0 0 18px;
+    max-width: 640px;
+  }
+
+  .hero-kicker {
+    color: var(--clover);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .poster {
+    background:
+      linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.2)),
+      url("https://bclover.jp/images/special/750_1334.jpg") center top / cover;
+    border: 1px solid rgba(247, 220, 132, 0.62);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.46);
+    min-height: 250px;
+    position: relative;
+  }
+
+  .poster::after {
+    border: 1px solid rgba(247, 220, 132, 0.5);
+    content: "";
+    inset: 8px;
+    position: absolute;
+  }
+
+  .card {
+    background: linear-gradient(180deg, var(--panel), rgba(10, 10, 7, 0.96));
+    border: 1px solid var(--line);
+    box-shadow: 0 16px 36px var(--shadow);
+    margin-bottom: 18px;
+    padding: 22px;
+    position: relative;
+  }
+
+  .card::before {
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    content: "";
+    height: 1px;
+    left: 18px;
+    opacity: 0.7;
+    position: absolute;
+    right: 18px;
+    top: 8px;
+  }
+
+  h1,
+  h2 {
+    color: var(--gold-soft);
+    margin: 0 0 16px;
+  }
+
+  p { line-height: 1.55; }
+
+  label {
+    color: var(--muted);
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  input,
+  textarea,
+  button {
+    font: inherit;
+  }
+
+  input,
+  textarea {
+    background: #090a08;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    margin-top: 5px;
+    padding: 11px;
+    width: 100%;
+  }
+
+  button {
+    background: linear-gradient(180deg, #f1d477, #b98224);
+    border: 1px solid #f7dc84;
+    color: #120f08;
+    cursor: pointer;
+    font-weight: 800;
+    padding: 10px 16px;
+  }
+
+  button:hover {
+    background: linear-gradient(180deg, #fff0a8, #c6922d);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid rgba(128, 103, 47, 0.5);
+    padding: 10px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th { color: var(--gold-soft); }
+
+  .status-open { color: var(--gold); }
+  .status-reviewing { color: var(--blue); }
+  .status-reviewed { color: var(--clover); }
+
+  .error {
+    color: var(--danger);
+    margin-bottom: 16px;
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  pre {
+    background: #070807;
+    border: 1px solid var(--line);
+    color: #efe2bd;
+    overflow-x: auto;
+    padding: 13px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  form.inline { display: inline; }
+
+  .actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 880px) {
+    .route-board,
+    .hero {
+      grid-template-columns: 1fr;
+    }
+
+    .poster {
+      max-width: 260px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    header { padding: 14px; }
+
+    .topbar {
+      align-items: flex-start;
+      display: grid;
+    }
+
+    .hero { padding: 20px; }
+    .hero h1 { font-size: 34px; }
+    main { padding: 0 12px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">V</span>Wizard King</a>
+    <span class="session">signed in as {{ username or current_user or "anonymous" }} | {{ current_role }}</span>
+  </div>
+  <section class="route-board" aria-label="Public challenge routes">
+    <div class="route-group">
+      <h2>Public</h2>
+      <div class="route-list">
+        <a class="route-chip" href="/">GET /</a>
+        <a class="route-chip" href="/login">GET /login</a>
+        <span class="route-chip post">POST /login</span>
+        <a class="route-chip" href="/register">GET /register</a>
+        <span class="route-chip post">POST /register</span>
+        <a class="route-chip" href="/access">GET /access</a>
+      </div>
+    </div>
+  </section>
+</header>
+<main>
+<section class="hero" aria-label="Wizard King challenge">
+  <div>
+
+    <h1>Wizard King</h1>
+
+    <div class="actions">
+      <a class="route-chip" href="/access">View routes</a>
+      <a class="route-chip" href="/tickets">Open tickets</a>
+    </div>
+  </div>
+  <div class="poster" role="img" aria-label="Poster"></div>
+</section>
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>

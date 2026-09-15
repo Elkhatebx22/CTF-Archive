@@ -1,0 +1,25 @@
+## Category Name: OPERATION ???
+
+### Challenge Title: **Case_1337**
+
+#### Description:
+
+The unthinkable has happened.
+
+An NSA agent's device was found compromised — an infiltration that *should* be nearly impossible. Our internal systems flagged the attack early, stopping the malware just before execution. We were able to get a **network pcap** file during the incident. But the very fact that it got that far raises a chilling possibility: **we have an insider.**
+
+This isn’t just about containment. This is about retaliation.
+
+We're not just another agency — **we are the NSA**. We don't let breaches go unanswered. Your mission is clear:
+
+* Analyze the compromised device
+* Reverse-engineer the malware
+* Uncover the source of the breach
+* Identify the Advanced Persistent Threat (APT) group behind the attack
+* And most importantly… **shut them down**
+
+> **This operation is top secret and top priority. There is no room for mistakes. No second chances.**
+
+Use every bit of your team's technical prowess. **Forensics, malware analysis, threat intelligence, OSINT, Penetration Testing** — everything is on the table. This isn’t just an investigation. This is a hunt.
+
+> Remember: **we don't joke. We strike back.**

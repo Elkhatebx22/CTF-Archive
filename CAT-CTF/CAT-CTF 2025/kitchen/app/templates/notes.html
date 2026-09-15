@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}My Notes - My Notes App{% endblock %}
+{% block content %}
+<h2>My Notes</h2>
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+<form method="POST">
+    <textarea name="content" placeholder="Write your note here...">{{ note }}</textarea><br>
+    <button type="submit">Save Note</button>
+</form>
+{% endblock %}

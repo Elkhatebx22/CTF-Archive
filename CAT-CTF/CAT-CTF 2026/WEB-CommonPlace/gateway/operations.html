@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editorial Operations · Commonplace</title>
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="/">Commonplace</a>
+      <span>Editorial operations</span>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <p class="eyebrow">Restricted workspace</p>
+    <h1>Editorial Operations</h1>
+    <p class="lede">Mirror a remote publication proof into the editorial review spool.</p>
+
+    <form id="asset-form" class="panel stack operations-card">
+      <label>
+        Desk access code
+        <input id="access-code" name="accessCode" type="password" autocomplete="off" required maxlength="128">
+      </label>
+      <label>
+        Publication proof URL
+        <input id="source-url" name="sourceUrl" type="url" inputmode="url" placeholder="https://files.example/proof" required maxlength="2048">
+      </label>
+      <div class="actions">
+        <button type="submit">Mirror asset</button>
+        <span id="operation-status" class="status" role="status" aria-live="polite">Ready</span>
+      </div>
+    </form>
+  </main>
+  <script src="/operations/app.js" defer></script>
+</body>
+</html>

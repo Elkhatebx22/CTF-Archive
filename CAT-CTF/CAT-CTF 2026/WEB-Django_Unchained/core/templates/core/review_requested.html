@@ -1,0 +1,9 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>Review Queued</h1>
+{% if queued %}
+  <p>Desk link generated for ticket #{{ ticket.id }}.</p>
+{% else %}
+  <p>Desk link is already waiting for ticket #{{ ticket.id }}.</p>
+{% endif %}
+{% endblock %}

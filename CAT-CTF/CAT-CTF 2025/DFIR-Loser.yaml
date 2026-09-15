@@ -1,0 +1,9 @@
+name: "Loser"
+author: "t0orf3n"
+flags: "CATF{C:\Users\t0orf3n\AppData\Local\Temp\GreenHell.crack.exe_3_2025-07-12 13:34:17}"
+description: "The loser wanna play a newly released game without paying, he tried to play it with a game crack. Ending up cracking the system.
+              1- What's the name and filepath of the malicious file.
+              2- what's the run status and the last time of execution.
+              Flag Example: CATF{X:\Users\blabla\blabla.exe_N_YYYY-MM-DD HH:MM:SS}"
+
+Download Link: https://drive.google.com/file/d/1XHU6y0ra8UsiQUA0GEKbCnmlKG8bQuIe/view?usp=sharing

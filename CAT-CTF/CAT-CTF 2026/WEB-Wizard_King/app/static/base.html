@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} - Northstar Desk</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+</head>
+<body>
+  <header><h1>{{ product }}</h1><p>{{ tenant }}</p></header>
+  {{ nav|safe }}
+  <main>{{ body|safe }}</main>
+</body>
+</html>

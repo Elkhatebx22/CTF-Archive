@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container" style="max-width: 600px;">
+        <div class="dashboard-header">
+            <h2>Welcome, <%= username %>!</h2>
+            <a href="/login">Logout</a>
+        </div>
+
+        <% if (reset_success) { %>
+            <div class="message success"><%= reset_success %></div>
+        <% } %>
+        <% if (reset_error) { %>
+            <div class="message error"><%= reset_error %></div>
+        <% } %>
+
+        <h3>Your Notes</h3>
+        <% if (notes.length > 0) { %>
+            <ul class="notes-list">
+                <% notes.forEach(note => { %>
+                    <li><%- note %></li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p style="text-align: left; color: #65676b;">You have no notes yet.</p>
+        <% } %>
+
+        <hr>
+
+        <h3>Add a New Note</h3>
+        <form action="/add_note" method="post">
+            <input type="hidden" name="username" value="<%= username %>">
+            <input type="hidden" name="token" value="<%= token %>">
+            <input type="text" name="note" placeholder="Enter your note..." required>
+            <button type="submit">Add Note</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Mission scroll #{{ ticket.id }}</h2>
+  <p class="muted">
+    Bound to {{ ticket.owner }} on {{ ticket.created|ts }}
+    &middot; status: <span class="status-{{ ticket.status }}">{{ ticket.status }}</span>
+  </p>
+  <pre>{{ ticket.content }}</pre>
+</div>
+<p><a href="/tickets">&larr; back to scrolls</a></p>
+{% endblock %}

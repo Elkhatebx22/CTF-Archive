@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel | Pixel Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Press Start 2P', cursive;
+      background: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGt1b2Z1Njl3a3RtZzU2NW85aWhlNWZ1N3YyMG0zNW4wbGFpMzcxMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pVGsAWjzvXcZW4ZBTE/giphy.gif') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      margin: 0;
+      color: #00ffcc;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      font-size: 24px;
+      text-shadow: 2px 2px #000;
+      margin-bottom: 30px;
+      text-align: center;
+      border-bottom: 2px solid #00ffcc;
+      padding-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 16px;
+      text-shadow: 2px 2px #000;
+      margin: 30px 0 20px 0;
+      color: #ff6b6b;
+    }
+
+    .welcome {
+      font-size: 14px;
+      margin-bottom: 30px;
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 255, 204, 0.1);
+      border: 1px solid #00ffcc;
+      border-radius: 8px;
+    }
+
+    .admin-section {
+      margin-bottom: 40px;
+      padding: 20px;
+      background: rgba(255, 107, 107, 0.1);
+      border: 2px solid #ff6b6b;
+      border-radius: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #00ffcc;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 15px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      background: #000;
+      border: 2px solid #00ffcc;
+      color: #00ffcc;
+      border-radius: 4px;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    textarea:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    }
+
+    button {
+      background: #00ffcc;
+      color: #000;
+      border: 2px solid #00ffcc;
+      padding: 12px 25px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      box-shadow: 0 0 10px #00ffcc;
+      transition: all 0.3s ease;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background: #000;
+      color: #00ffcc;
+      box-shadow: 0 0 20px #00ffcc;
+    }
+
+    .danger-btn {
+      background: #ff6b6b;
+      color: #000;
+      border: 2px solid #ff6b6b;
+      box-shadow: 0 0 10px #ff6b6b;
+    }
+
+    .danger-btn:hover {
+      background: #000;
+      color: #ff6b6b;
+      box-shadow: 0 0 20px #ff6b6b;
+    }
+
+    .result-container {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid #555;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      min-height: 100px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      word-break: break-all;
+      display: none;
+    }
+
+    .result-container.success {
+      border-color: #00ffcc;
+      background: rgba(0, 255, 204, 0.05);
+    }
+
+    .result-container.error {
+      border-color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.05);
+    }
+
+    .nav-links {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #00ffcc;
+    }
+
+    .nav-links a {
+      color: #00ffcc;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      text-shadow: 0 0 10px #00ffcc;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .warning {
+      background: rgba(255, 107, 107, 0.2);
+      border: 1px solid #ff6b6b;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      color: #00ffcc;
+      font-size: 10px;
+      margin: 10px 0;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>� Admin Panel 🐱</h1>
+    
+    <div class="welcome">
+      Welcome back, <strong><%- user %></strong>!<br>
+      <small>Can you find the flag?</small>
+    </div>
+
+    <div class="admin-section">
+      <h2>🔧 Admin Panel Tester</h2>
+      <p style="font-size: 10px; margin-bottom: 20px;">
+        Add:
+      </p>
+
+      <form id="admin-form">
+        <div class="form-group">
+          <label for="html">Admin Content:</label>
+          <textarea id="html" name="html" placeholder="Enter your Admin content here...
+"></textarea>
+        </div>
+        <button type="submit">🔍 Test</button>
+        <button type="button" class="danger-btn" onclick="clearContent()">🗑️ Clear</button>
+      </form>
+
+      <div class="loading" id="loading">
+        Processing... 🔄
+      </div>
+
+      <div class="warning">
+        ⚠️ Payloads are filtered for security. Creative bypasses are encouraged! ⚠️
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h2>📋 Result</h2>
+      <div class="result-container" id="result-container">
+        <em>Nothing tested yet. Submit a content above to see results!</em>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="/profile">👤 Profile</a>
+      <a href="/admin/2fa-setup">🔐 2FA Setup</a>
+      <a href="/logout">🚪 Logout</a>
+    </div>
+  </div>
+
+  <script>
+    function clearContent() {
+      document.getElementById('html').value = '';
+      document.getElementById('result-container').style.display = 'none';
+    }
+
+    // Handle form submission
+    document.getElementById('admin-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(this);
+      const payload = formData.get('html');
+      
+      if (!payload.trim()) {
+        alert('Please enter a payload first!');
+        return;
+      }
+      
+      const loading = document.getElementById('loading');
+      const resultContainer = document.getElementById('result-container');
+      
+      // Show loading
+      loading.style.display = 'block';
+      resultContainer.style.display = 'none';
+      
+      try {
+        const response = await fetch('/admin/update', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams(formData)
+        });
+        
+        const data = await response.json();
+        
+        // Hide loading
+        loading.style.display = 'none';
+        
+        // Show result
+        resultContainer.style.display = 'block';
+        
+        if (data.success) {
+          resultContainer.className = 'result-container success';
+          resultContainer.innerHTML = `
+            <strong>✅ Success!</strong><br><br>
+            <strong>Payload:</strong> ${data.payload}<br><br>
+            <strong>Result:</strong><br>
+            <pre>${data.result}</pre>
+          `;
+        } else {
+          resultContainer.className = 'result-container error';
+          resultContainer.innerHTML = `
+            <strong>❌ Error!</strong><br><br>
+            <strong>Payload:</strong> ${data.payload}<br><br>
+            <strong>Error:</strong><br>
+            ${data.error}
+            ${data.blocked_pattern ? `<br><br><strong>Blocked Pattern:</strong> ${data.blocked_pattern}` : ''}
+          `;
+        }
+        
+      } catch (error) {
+        // Hide loading
+        loading.style.display = 'none';
+        
+        // Show error
+        resultContainer.style.display = 'block';
+        resultContainer.className = 'result-container error';
+        resultContainer.innerHTML = `
+          <strong>❌ Network Error!</strong><br><br>
+          ${error.message}
+        `;
+      }
+    });
+
+    // Auto-resize textarea
+    const textarea = document.getElementById('html');
+    textarea.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = this.scrollHeight + 'px';
+    });
+  </script>
+</body>
+</html>

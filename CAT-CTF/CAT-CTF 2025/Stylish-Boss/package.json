@@ -1,0 +1,18 @@
+{
+  "name": "stylish-boss",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "metadata-stripper": "^1.0.1",
+    "puppeteer": "^24.11.2",
+    "sqlite3": "^5.1.2"
+  }
+}

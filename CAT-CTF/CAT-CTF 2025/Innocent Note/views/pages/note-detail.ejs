@@ -1,0 +1,21 @@
+<%- include('../partials/header') %>
+
+<div class="note-detail-container">
+    <h2>Note Detail</h2>
+    <% if (owner) { %>
+        <p><strong>Owned by:</strong> <%= owner %></p>
+    <% } %>
+    <p><strong>Note ID:</strong> <%= note.id %></p>
+    <hr>
+    <h4>Content:</h4>
+    <div class="note-content">
+        <%- note.content %>
+    </div>
+    <br>
+    <a href="/notes">← Back to My Notes</a>
+    <% if (user && user.role === 'admin') { %>
+        <a href="/admin" style="margin-left: 1rem;">← Back to Admin Panel</a>
+    <% } %>
+</div>
+
+<%- include('../partials/footer') %>

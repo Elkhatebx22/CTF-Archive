@@ -1,0 +1,24 @@
+services:
+  web:
+    build:
+      context: ./app
+    environment:
+      BOT_URL: http://bot:9001/visit
+      BOT_ALLOWED_PREFIX: http
+      BOT_REQUEST_TIMEOUT: "30"
+    ports:
+      - "5000:5000"
+
+  bot:
+    build:
+      context: ./bot
+    environment:
+      BOT_PORT: "9001"
+      CHALLENGE_ORIGIN: http://web:5000
+      ALLOWED_PREFIX: http
+      CHROME_PATH: /usr/bin/chromium
+      FLAG: flag{test}
+      NAVIGATION_TIMEOUT_MS: "10000"
+      VISIT_MS: "10000"
+    depends_on:
+      - web

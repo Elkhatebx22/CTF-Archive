@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Admin routes</h2>
+  <div class="route-list">
+    <a class="route-chip" href="/admin">GET /admin</a>
+    <a class="route-chip" href="/admin/assets">GET /admin/assets</a>
+    <span class="route-chip post">POST /admin/assets</span>
+    <a class="route-chip" href="/admin/assets/preview/example.txt">GET /admin/assets/preview/&lt;path&gt;</a>
+    <a class="route-chip" href="/admin/login">GET /admin/login</a>
+    <span class="route-chip post">POST /admin/login</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Review queue</h2>
+  <p><a href="/admin/assets">Assets</a> &middot; <a href="/admin/login">Owner verification</a></p>
+  <p class="muted">All tickets, newest first.</p>
+  {% if tickets %}
+  <table>
+    <tr><th>ID</th><th>Owner</th><th>Status</th><th>Opened</th></tr>
+    {% for t in tickets %}
+    <tr>
+      <td><a href="/tickets/{{ t.id }}">#{{ t.id }}</a></td>
+      <td>{{ t.owner }}</td>
+      <td class="status-{{ t.status }}">{{ t.status }}</td>
+      <td>{{ t.created|ts }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted">No tickets yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

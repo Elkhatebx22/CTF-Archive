@@ -1,0 +1,52 @@
+name: django-unchained
+
+services:
+  web:
+    container_name: django-unchained-web
+    image: django-unchained-web
+    build: .
+    command: >
+      sh -c "mkdir -p /app/data
+      && python manage.py migrate --noinput
+      && python manage.py seed_challenge
+      && gunicorn reviewstation.wsgi:application --bind 0.0.0.0:8000 --workers 4 --threads 2 --timeout 30"
+    environment:
+      DEBUG: "0"
+      SECRET_KEY: "change-me-in-infra"
+      FLAG: "CATF{fake_flag_for_local_testing}"
+      ADMIN_USERNAME: "reviewer"
+      ADMIN_PASSWORD_FILE: "/app/data/admin_password"
+      BOT_TOKEN: "local-bot-token"
+      APP_BASE_HOST: "app.cat26.local"
+      DATABASE_URL: "/app/data/db.sqlite3"
+    volumes:
+      - webdata:/app/data
+
+  nginx:
+    container_name: django-unchained-nginx
+    image: nginx:1.27-alpine
+    depends_on:
+      - web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+  bot:
+    container_name: django-unchained-bot
+    image: django-unchained-bot
+    build: ./bot
+    depends_on:
+      - nginx
+      - web
+    environment:
+      BOT_TOKEN: "local-bot-token"
+      BOT_QUEUE_URL: "http://web:8000/bot/next/"
+      ADMIN_USERNAME: "reviewer"
+      ADMIN_PASSWORD_FILE: "/app/data/admin_password"
+      LOGIN_URL: "http://app.cat26.local/login/"
+    volumes:
+      - webdata:/app/data:ro
+
+volumes:
+  webdata:

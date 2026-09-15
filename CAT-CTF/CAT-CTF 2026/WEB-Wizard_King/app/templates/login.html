@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h1>Grimoire gate</h1>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <form method="post" action="/login">
+    <label>Mage name
+      <input type="text" name="username" autocomplete="username" required>
+    </label>
+    <label>Mana phrase
+      <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <button type="submit">Enter the hideout</button>
+  </form>
+  <p><a href="/register">Claim a grimoire</a></p>
+</div>
+{% endblock %}

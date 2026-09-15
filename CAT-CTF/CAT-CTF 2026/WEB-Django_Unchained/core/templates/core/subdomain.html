@@ -1,0 +1,8 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>{{ project.name }}</h1>
+<p>{{ project.summary }}</p>
+{% for note, rendered in rendered_notes %}
+  <div class="panel">{{ rendered|safe }}</div>
+{% endfor %}
+{% endblock %}

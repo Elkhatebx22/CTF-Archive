@@ -1,0 +1,12 @@
+[tcp]
+  [tcp.routers]
+    [tcp.routers.Router0]
+      entryPoints = ["web"]
+      service = "app"
+      rule = "HostSNI(`*`)"
+
+  [tcp.services]
+    [tcp.services.app]
+      [tcp.services.app.loadBalancer]
+        [[tcp.services.app.loadBalancer.servers]]
+          address = "web:8080"

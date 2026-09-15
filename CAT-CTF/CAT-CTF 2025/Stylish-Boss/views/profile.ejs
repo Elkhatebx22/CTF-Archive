@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: '<%- userFont %>';
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .profile-card {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .user-content {
+            font-family: sans-serif;
+            color: #333;
+            padding: 15px;
+            border: 1px dashed #ccc;
+            border-radius: 5px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-card">
+        <h1>Welcome to Your Profile!</h1>
+        <p>This is your personalized profile page. Your content below uses your preferred font setting.</p>
+        <div class="user-content">
+            <p>This text should appear in your chosen font.</p>
+            <p>You can customize various aspects of your experience here.</p>
+        </div>
+
+        <a href="/" class="back-link">&larr; Go Back to Font Settings</a>
+
+        <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+            <h2>Report an Issue</h2>
+            <p>If you've found a bug with your theme, click here to have an admin review it.</p>
+            <form id="report-form">
+                <button type="submit">Report Issue</button>
+            </form>
+            <div id="report-result" style="margin-top: 10px;"></div>
+        </div>
+
+        <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+            <h2>Metadata Stripper API</h2>
+            <p>Upload a file to strip its metadata. Requires a valid API key.</p>
+            <form id="metadata-form">
+                <label for="file-upload">Select file:</label>
+                <input type="file" id="file-upload" name="file" required>
+                <button type="submit">Strip Metadata</button>
+            </form>
+            <div id="metadata-result" style="margin-top: 10px; font-family: monospace;"></div>
+        </div>
+
+        <div id="api-key-container" data-internal-api-key="<%= apiKey %>"></div>
+    </div>
+
+    <script>
+        const metadataForm = document.getElementById('metadata-form');
+        const resultDiv = document.getElementById('metadata-result');
+        const apiKey = document.getElementById('api-key-container').dataset.internalApiKey;
+        const fileInput = document.getElementById('file-upload');
+
+        const reportForm = document.getElementById('report-form');
+        const reportResultDiv = document.getElementById('report-result');
+
+        reportForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            reportResultDiv.textContent = 'Sending...';
+
+            try {
+                const response = await fetch('/report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: "<%= user.username %>" })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    reportResultDiv.textContent = `${data.message}`;
+                } else {
+                    reportResultDiv.textContent = `Error: ${data.message || response.statusText}`;
+                }
+            } catch (error) {
+                reportResultDiv.textContent = 'An unexpected error occurred.';
+                console.error('Report error:', error);
+            }
+        });
+
+        metadataForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = fileInput.files[0];
+            if (!file) {
+                resultDiv.textContent = 'Please select a file first.';
+                return;
+            }
+            resultDiv.textContent = 'Processing...';
+            
+            try {
+                const response = await fetch('/api/strip-metadata', {
+                    method: 'POST',
+                    headers: {
+                        'X-API-Key': apiKey,
+                        'Content-Type': file.type,
+                        'X-File-Name': file.name
+                    },
+                    body: file
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.textContent = `Success: ${data.message}`;
+                } else {
+                    resultDiv.textContent = `Error: ${data.message || response.statusText}`;
+                }
+            } catch (error) {
+                resultDiv.textContent = 'An unexpected error occurred.';
+                console.error('Fetch error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h1>Routes</h1>
+  <p class="muted">Current role: {{ role }}. This page shows only the public routes.</p>
+</div>
+
+<div class="card">
+  <h2>Public routes</h2>
+  <table>
+    <tr><th>Route</th><th>Method</th><th>Purpose</th></tr>
+    <tr><td><a href="/">/</a></td><td>GET</td><td>Landing redirect</td></tr>
+    <tr><td><a href="/login">/login</a></td><td>GET, POST</td><td>Player login</td></tr>
+    <tr><td><a href="/register">/register</a></td><td>GET, POST</td><td>Player registration</td></tr>
+    <tr><td><a href="/access">/access</a></td><td>GET</td><td>Route map</td></tr>
+  </table>
+</div>
+
+{% endblock %}

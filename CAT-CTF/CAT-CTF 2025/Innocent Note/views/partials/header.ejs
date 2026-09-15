@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteApp | <%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>NoteApp</h1>
+            <nav>
+                <% if (user) { %>
+                    <span>Welcome, <%= user.username %></span>
+                    <% if (user.role === 'admin') { %>
+                        <a href="/admin">Admin Panel</a>
+                    <% } %>
+                    <a href="/notes">My Notes</a>
+                    <a href="/logout">Logout</a>
+                <% } else { %>
+                    <a href="/login">Login</a>
+                    <a href="/register">Register</a>
+                <% } %>
+            </nav>
+        </header>
+        <main>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Login - My Notes App{% endblock %}
+{% block content %}
+<h2>Login</h2>
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+<form method="POST">
+    <label>Username:<br><input name="username" id="user" required></label><br><br>
+    <label>Password:<br><input type="password" id="password" name="password" required></label><br><br>
+    <button type="submit">Login</button>
+</form>
+{% endblock %}

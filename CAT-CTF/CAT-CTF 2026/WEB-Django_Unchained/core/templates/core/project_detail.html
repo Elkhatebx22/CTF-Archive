@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>{{ project.name }}</h1>
+<p>{{ project.summary }}</p>
+<p>Slug: <code>{{ project.slug }}</code></p>
+<p>Approved: {{ project.approved }}</p>
+<p>
+  <a class="button" href="/review/request/{{ project.slug }}/">Request review</a>
+  <a class="button" href="/projects/{{ project.slug }}/assets/">Assets</a>
+  <a class="button" href="/projects/{{ project.slug }}/contacts/">Contacts</a>
+  <a class="button" href="/projects/{{ project.slug }}/audit/">Audit</a>
+  <a class="button" href="/projects/{{ project.slug }}/notifications/">Notifications</a>
+  <a class="button" href="/projects/{{ project.slug }}/vault/">Open vault</a>
+</p>
+<h2>Review tickets</h2>
+{% for ticket in tickets %}
+  <div class="panel">
+    <p>#{{ ticket.id }} {{ ticket.title }}</p>
+    <p class="muted">state: {{ ticket.state }}</p>
+  </div>
+{% endfor %}
+{% endblock %}

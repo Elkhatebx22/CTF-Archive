@@ -1,0 +1,115 @@
+services:
+  token-init:
+    image: alpine
+    command: sh -c "[ -s /secrets/bot_token ] || head -c 32 /dev/urandom | od -An -tx1 -v | tr -d '[:space:]' > /secrets/bot_token"
+    volumes:
+      - token_secrets:/secrets
+
+  traefik:
+    image: traefik:latest
+    command:
+      - "--providers.file.filename=/traefik/config.toml"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "0.0.0.0:8080:80"
+    volumes:
+      - "./traefik/config.toml:/traefik/config.toml:ro"
+    depends_on:
+      - web
+    networks:
+      - clover-net
+    restart: unless-stopped
+
+  db:
+    build: ./db
+    environment:
+      - MARIADB_ROOT_PASSWORD=REDACTED
+      - MARIADB_DATABASE=clover
+    networks:
+      - clover-net
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ./app
+      args:
+        DECOY_FLAG: ${DECOY_FLAG:-REDACTED}
+    entrypoint: ["sh", "-c", "export ASTA_TOKEN=$(tr -d '[:space:]' < /secrets/bot_token) && python app.py"]
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+      - /app/cache:size=16m,mode=1777
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1
+      PYTHONUNBUFFERED: 1
+      CLOVER_ADMIN_USERNAME: admin
+      CLOVER_ADMIN_PASSWORD: REDACTED
+      CLOVER_DB_HOST: db
+      CLOVER_DB_USER: clover
+      CLOVER_DB_PASSWORD: REDACTED
+      CLOVER_DB_WRITE_USER: clover_writer
+      CLOVER_DB_WRITE_PASSWORD: REDACTED
+      CLOVER_DB_NAME: clover
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: clover
+      DB_PASSWORD: REDACTED
+      DB_WRITE_USER: clover_writer
+      DB_WRITE_PASSWORD: REDACTED
+      DB_NAME: clover
+    depends_on:
+      db:
+        condition: service_started
+      token-init:
+        condition: service_completed_successfully
+    volumes:
+      - token_secrets:/secrets:ro
+    expose:
+      - "5000"
+    networks:
+      - clover-net
+    restart: unless-stopped
+
+  web:
+    build: ./proxy
+    environment:
+      - UPSTREAM_ADDR=app:5000
+      - SERVICE_LISTEN_ADDR=:8080
+    expose:
+      - "8080"
+    depends_on:
+      - app
+    networks:
+      - clover-net
+    restart: unless-stopped
+
+  bot:
+    build: ./bot
+    entrypoint: ["sh", "-c", "export ASTA_TOKEN=$(tr -d '[:space:]' < /secrets/bot_token) && python bot.py"]
+    environment:
+      ASTA_URL: http://web:8080
+      ASTA_TOKEN_FILE: /secrets/bot_token
+      CLOVER_ADMIN_USERNAME: admin
+      CLOVER_ADMIN_PASSWORD: REDACTED
+      ASTA_BOT_INTERVAL: 5
+    depends_on:
+      web:
+        condition: service_started
+      token-init:
+        condition: service_completed_successfully
+    volumes:
+      - token_secrets:/secrets
+    networks:
+      - clover-net
+    restart: unless-stopped
+
+networks:
+  clover-net:
+    driver: bridge
+
+volumes:
+  token_secrets:

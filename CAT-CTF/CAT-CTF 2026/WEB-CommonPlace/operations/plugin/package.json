@@ -1,0 +1,12 @@
+{
+  "name": "@commonplace/plugin-proof-ingest",
+  "displayName": "Commonplace Proof Ingest",
+  "description": "Mirrors remote publication proofs into the editorial spool.",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "./dist/server/index.js",
+  "peerDependencies": {
+    "@nocobase/client": "2.x",
+    "@nocobase/server": "2.x"
+  }
+}

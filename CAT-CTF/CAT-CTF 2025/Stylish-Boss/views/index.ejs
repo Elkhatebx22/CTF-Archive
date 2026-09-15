@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stylish Boss</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Welcome to the Font Customizer</h1>
+    <% if (user) { %>
+        <p>Hello, <%= user.username %>! <a href="/logout">Logout</a></p>
+        <p>Go to your <a href="/profile">profile</a> to see your settings.</p>
+        <form action="/set-font" method="POST">
+            <label for="fontName">Set your preferred font:</label>
+            <input type="text" id="fontName" name="fontName" value="<%= currentFont %>">
+            <button type="submit">Set Font</button>
+        </form>
+    <% } else { %>
+        <p><a href="/login">Login</a> or <a href="/register">Register</a> to customize your profile.</p>
+    <% } %>
+</body>
+</html>

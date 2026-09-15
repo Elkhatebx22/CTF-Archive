@@ -1,0 +1,9 @@
+name: "Dead Icons Speak"
+author: "wh1pl4sh"
+flags: "CATF{flagstealer.exe:thumbn41l_pwn}"
+description: "It wasn’t logged. It wasn’t scanned. It didn’t survive.
+  Yet, for a brief moment, it existed — long enough for Windows to glimpse it.
+  That single moment left behind a silent witness: an icon rendered into the depths of a forgotten cache.
+  Flag Format: CATF{test.exe:flag}"
+
+Download Link: https://drive.google.com/file/d/1UanwMBGZmFrpAdHEQIZISlRSdDpvqf9O/view?usp=sharing

@@ -1,0 +1,17 @@
+{
+  "name": "catdesk-admin-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Authenticated review bot for the CatDesk challenge",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "puppeteer": "25.10.0"
+  }
+}

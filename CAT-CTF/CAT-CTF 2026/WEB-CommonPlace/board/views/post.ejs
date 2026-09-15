@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> · Commonplace</title>
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="/">Commonplace</a>
+      <span>Independent community publishing</span>
+    </nav>
+  </header>
+
+  <main class="shell" data-post-id="<%= post.id %>">
+    <p class="eyebrow">Published <%= publishedAt %></p>
+    <h1><%= post.title %></h1>
+
+    <article class="panel prose"><%- bodyHtml %></article>
+
+    <div class="actions review-actions">
+      <button id="report" type="button">Send for review</button>
+      <span id="review-status" class="status" role="status"><%= post.state %></span>
+    </div>
+
+    <section class="discussion">
+      <h2>Discussion</h2>
+      <div id="comments" class="comments">
+        <% if (post.comments.length === 0) { %>
+          <p>No comments yet.</p>
+        <% } else { %>
+          <% for (const comment of post.comments) { %>
+            <p><%= comment.message %></p>
+          <% } %>
+        <% } %>
+      </div>
+
+      <form id="comment-form" class="panel stack">
+        <label>
+          <span>Add a comment</span>
+          <input id="comment" maxlength="4000" required>
+        </label>
+        <div class="actions">
+          <button type="submit">Comment</button>
+          <span id="comment-status" class="status" role="status"></span>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="/assets/post.js" defer></script>
+</body>
+</html>

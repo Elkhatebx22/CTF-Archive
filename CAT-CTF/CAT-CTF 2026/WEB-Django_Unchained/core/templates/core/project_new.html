@@ -1,0 +1,11 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1>New Project</h1>
+<form method="post">
+  {% csrf_token %}
+  <label>Name <input name="name"></label>
+  <label>Subdomain slug <input name="slug" placeholder="launchpad"></label>
+  <label>Summary <textarea name="summary"></textarea></label>
+  <button>Create</button>
+</form>
+{% endblock %}

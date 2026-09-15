@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+bot/node_modules/
+solver/__pycache__/
+app/__pycache__/

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> · Commonplace</title>
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="/">Commonplace</a>
+      <span>Independent community publishing</span>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <p class="eyebrow">New publication</p>
+    <h1>Share a post</h1>
+    <p class="lede">Write in Markdown, preview the published page, and invite discussion.</p>
+
+    <form id="publisher" class="panel stack">
+      <label>
+        <span>Title</span>
+        <input id="title" name="title" maxlength="120" required>
+      </label>
+      <label>
+        <span>Post</span>
+        <textarea id="body" name="body" rows="16" cols="80" maxlength="48000" required></textarea>
+      </label>
+      <div class="actions">
+        <button type="submit">Publish</button>
+        <span id="status" class="status" role="status"></span>
+      </div>
+    </form>
+  </main>
+
+  <script src="/assets/home.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Renderer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <main class="shell">
+        <header class="masthead">
+            <div>
+                <p class="eyebrow">XSS Lab</p>
+                <h1>Signal Renderer</h1>
+            </div>
+            <span class="status">bot online</span>
+        </header>
+
+        {% if error %}
+        <div class="notice error">{{ error }}</div>
+        {% endif %}
+
+        {% if report_result %}
+        <div class="notice ok">{{ report_result }}</div>
+        {% endif %}
+
+        <section class="panel">
+            <form method="GET" action="/">
+                <label for="html">HTML input</label>
+                <textarea id="html" name="html" spellcheck="false">{{ html }}</textarea>
+                <button type="submit">Render</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <form method="GET" action="/report">
+                <label for="url">Solver URL</label>
+                <input id="url" name="url" type="url" placeholder="http://your-ip:9002/" required>
+                <button type="submit">Report</button>
+            </form>
+        </section>
+
+        {% if rendered_html %}
+        <section class="output">
+            <h2>Rendered Output</h2>
+            <div class="rendered">{{ rendered_html | safe }}</div>
+        </section>
+        {% endif %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,11 @@
+services:
+  app:
+    build: ./app
+    image: ktichen:app
+    ports:
+      - "5000:5000"
+  bot:
+    build: ./bot
+    image: ktichen:bot
+    ports:
+      - "3000:3000"

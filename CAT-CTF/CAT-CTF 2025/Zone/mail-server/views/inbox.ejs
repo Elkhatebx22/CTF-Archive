@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><title>Inbox - <%= email %></title></head>
+<body>
+  <h1>Inbox for <%= email %></h1>
+  <% if (messages.length === 0) { %>
+    <p>No messages.</p>
+  <% } else { %>
+    <% messages.forEach(msg => { %>
+      <h3><%= msg.subject %></h3>
+      <p><%= msg.body %></p>
+      <hr>
+    <% }); %>
+  <% } %>
+</body>
+</html>
